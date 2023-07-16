@@ -1,16 +1,12 @@
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import Header from "@/components/Header";
 
 export default function Home() {
-  const { data: session } = useSession();
-
-  console.log('session', session);
-
   return (
-    <div className="flex flex-col">
-      <button onClick={() => signIn('kakao')}>Sign In</button>
-      <button onClick={() => signOut()}>Sign out</button>
-    </div>
+    <>
+      <Header title={"trippy"}></Header>
+      <div className="relative w-screen h-screen bg-white pt-[0px] flex items-center">
+        <h1>Home 페이지입니다.</h1>
+      </div>
+    </>
   );
 }
