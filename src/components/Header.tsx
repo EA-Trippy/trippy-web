@@ -20,7 +20,6 @@ export default function Header(props: HeaderProps) {
   };
 
   return (
-    <div className="bg-white">
       <div className="relative mx-20">
         <div className="flex items-center justify-between">
           <div className="ml-10 mt-7 mb-7">
@@ -32,7 +31,7 @@ export default function Header(props: HeaderProps) {
             <Search />
             <Alarm />
             <div className="relative">
-              <Profile onClick={handleProfileClick} />
+              <Profile onClick={handleProfileClick} className="cursor-pointer" />
               {isProfileOpen && (
                 <div className="absolute mt-7 right-0 w-40 py-2 bg-white border border-gray-200 shadow z-10">
                   <ul>
@@ -58,8 +57,7 @@ export default function Header(props: HeaderProps) {
           </div>
         </div>
         <div className="z-20"></div>
+        <hr className="border border-[#F5F5F5] mx-10"/>
       </div>
-      <hr className="border border-[#F5F5F5] mx-10"/>
-    </div>
   );
 }
