@@ -283,7 +283,7 @@ export default function Home() {
                 <div className = "mt-10">
                   <p className="text-[#808080]">1시간 전</p>
                 </div>
-                <div className = "mt-8">
+                <div className = "mt-8"> 
                   <div className="flex items-center">
                     <Heart />
                     <p className="text-[#808080] ml-1 mr-7">0</p>
