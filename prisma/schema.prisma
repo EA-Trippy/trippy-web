@@ -12,6 +12,12 @@ datasource db {
 
 model User {
   id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
+  username String? @unique
+  blogname String? @unique
+  email String? @unique
+  profileImage String?
+  hashedPassword String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hasNotification Boolean?
 }
