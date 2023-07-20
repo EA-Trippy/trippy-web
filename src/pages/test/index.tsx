@@ -8,13 +8,7 @@ export default function Home() {
   const router = useRouter();
   return (
     <div className="flex flex-col">
-      <button
-        onClick={async () => {
-          signIn();
-        }}
-      >
-        Sign In
-      </button>
+      <button onClick={() => signIn()}>Sign In</button>
       <button
         onClick={() => {
           signOut();
