@@ -9,6 +9,9 @@ const nextConfig = {
     });
     return config;
   },
-}
+  images: {
+    domains: ['k.kakaocdn.net', 'ssl.pstatic.net', 'lh3.googleusercontent.com'],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
