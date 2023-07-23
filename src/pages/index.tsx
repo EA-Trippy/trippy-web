@@ -72,7 +72,7 @@ const NEW_POSTS = [
     profile_image: "/images/test-image.jpeg",
     nickname: "두재정",
     blogName: "두재정의 작은 공간",
-    tags: ["일본", "오사카", "오사카"],
+    tags: ["일본", "나라", "오사카"],
     likedCount: 10,
     commentCount: 500,
   },
@@ -92,7 +92,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative w-screen min-h-screen bg-white pb-20">
+      <div className="relative w-screen min-h-screen bg-white pb-10">
         <Header title={"trippy"}></Header>
         <div className="mx-20">
           <div className="mx-10">

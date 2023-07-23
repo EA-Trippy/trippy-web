@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type TopPostPropType = {
+interface TopPostPropType {
   post: PostType;
-};
+}
 
-type TopPostListPropType = {
+interface TopPostListPropType {
   data: PostType[];
-};
+}
 
-type PostType = {
+interface PostType {
   image: string;
   title: string;
   body: string;
@@ -18,7 +18,7 @@ type PostType = {
   nickname: string;
   likedCount: number;
   commentCount: number;
-};
+}
 
 const TopPost = (props: TopPostPropType) => {
   const { post } = props;
