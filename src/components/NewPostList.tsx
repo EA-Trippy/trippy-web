@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type NewPostPropType = {
+interface NewPostPropType {
   post: PostType;
-};
+}
 
-type NewPostListPropType = {
+interface NewPostListPropType {
   data: PostType[];
-};
+}
 
-type PostType = {
+interface PostType {
   image: string;
   title: string;
   body: string;
@@ -20,7 +20,7 @@ type PostType = {
   tags: string[];
   likedCount: number;
   commentCount: number;
-};
+}
 
 const NewPost = (props: NewPostPropType) => {
   const { post } = props;
@@ -33,7 +33,7 @@ const NewPost = (props: NewPostPropType) => {
             {post.tags.map((tag, index) => (
               <div
                 key={index}
-                className="w-15 h-6 bg-p200 rounded-full text-body3 text-t100 ml-1 px-5 mb-2"
+                className="min-w-max h-6 bg-p200 rounded-full text-body3 text-t100 ml-1 px-3.5 pt-[1px] mb-2"
               >
                 {tag}
               </div>
@@ -42,7 +42,7 @@ const NewPost = (props: NewPostPropType) => {
           <div className="mt-10">
             <p className="text-[#808080]">{post.date}</p>
           </div>
-          <div className="mt-10 flex items-center">
+          <div className="mt-11 flex items-center">
             <Image
               alt="Heart"
               src={"/icons/heart.svg"}
@@ -64,20 +64,20 @@ const NewPost = (props: NewPostPropType) => {
           </div>
         </div>
         <div className="w-[60%] flex-shrink-0">
-          <p className="font-bold text-t500 text-h2 mb-10">{post.title}</p>
-          <p className="text-t300 text-body1 mb-8">{post.body}</p>
+          <p className="font-bold text-t500 text-h2 mb-10 mt-1">{post.title}</p>
+          <p className="text-t300 text-body1 mb-10">{post.body}</p>
           <div className="flex items-center">
             <Link href="/">
               <Image
                 src={post.profile_image}
-                className="w-6 h-6 rounded-full"
+                className="w-6 h-6 rounded-full mt-1"
                 alt="Profile Image"
                 width={24}
                 height={24}
                 style={{ objectFit: "cover" }}
               />
             </Link>
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center mt-2">
               <p className="ml-2 text-t400 text-body1">{post.blogName}</p>
               <p className="ml-2 text-t300 text-body1">{post.nickname}</p>
             </Link>
