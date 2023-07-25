@@ -24,6 +24,7 @@ module.exports = {
       caption1: ["12px", { lineHeight: "18px", fontWeight: 400 }],
       caption2: ["10px", { lineHeight: "12px", fontWeight: 700 }],
       caption3: ["10px", { lineHeight: "12px", fontWeight: 400 }],
+      caption4: ["20px", { lineHeight: "28px", fontWeight: 500 }],
     },
     extend: {
       colors: {

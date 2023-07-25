@@ -1,28 +1,23 @@
-import React, { useState, useRef, ChangeEvent } from "react";
+import React, { useState, useRef } from "react";
 import Header from "@/components/Header";
 import Link from "next/link";
 import Signup from "../../public/icons/signup.svg";
 import Signuperror from "../../public/icons/signuperror.svg";
 import Photoadd from "../../public/icons/photoadd.svg";
 
-export default function SignUp() {
+const SignUp = () => {
   const [showContent, setShowContent] = useState(true);
-
   const [name, setName] = useState("");
   const [blogName, setBlogName] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleNameChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
-  const handleBlogNameChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const handleBlogNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBlogName(event.target.value);
   };
 
@@ -31,24 +26,15 @@ export default function SignUp() {
   };
 
   const handleUploadClick = () => {
-    // 파일 input 엘리먼트의 클릭 이벤트를 트리거합니다.
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
 
-    // 파일이 선택된 경우에만 작업을 처리합니다.
     if (selectedFile) {
-      // 선택된 파일 정보를 표시합니다.
-      console.log("선택된 파일 이름:", selectedFile.name);
-      console.log("선택된 파일 타입:", selectedFile.type);
-      console.log("선택된 파일 크기:", selectedFile.size);
-
-      // 파일 업로드를 처리하거나 필요한 작업을 수행합니다.
-      // 예를 들어, 서버로 파일을 업로드하는 등의 작업을 수행할 수 있습니다.
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result;
@@ -60,15 +46,20 @@ export default function SignUp() {
     }
   };
 
+  const nameLength = name.length;
+  const blogNameLength = blogName.length;
   const isNameAndBlogNameSame = name === blogName;
-  const isNameLengthExceeded = name.length > 10;
-  const isBlogNameLengthExceeded = blogName.length > 10;
+  const isNameLengthExceeded = nameLength > 10;
+  const isBlogNameLengthExceeded = blogNameLength > 10;
+
+  const inputClass =
+    "bg-t100 border border-t200 text-t500 text-body4 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2";
 
   return (
     <>
       <div className="relative w-screen min-h-screen bg-white mb-10">
         <Header title={"trippy_signup"}></Header>
-        {showContent && (
+        {showContent ? (
           <div className="flex items-center justify-center mt-10 mx-20">
             <div className="w-[50%] border border-t100 rounded-lg p-10 shadow">
               <p className="text-p100 text-h2 text-center mx-20">
@@ -93,7 +84,7 @@ export default function SignUp() {
                   서로의 이야기를 통해 각자의 여행을 더욱 뜻깊게 만들어보세요!
                 </p>
                 <div
-                  className="w-40 h-10 mt-20 bg-p200 rounded-full text-h4 text-t100 flex items-center justify-center mx-auto cursor-pointer"
+                  className="w-40 h-10 mt-20 bg-p200 rounded-full text-caption4 text-t100 flex items-center justify-center mx-auto cursor-pointer pt-1"
                   onClick={handleNextClick}
                 >
                   다음
@@ -101,9 +92,7 @@ export default function SignUp() {
               </div>
             </div>
           </div>
-        )}
-
-        {!showContent && (
+        ) : (
           <div className="flex items-center justify-center mt-10 mx-20">
             <div className="w-[50%] border border-t100 rounded-lg p-10 shadow">
               <p className="text-p100 text-h2 text-center mx-20">
@@ -114,15 +103,12 @@ export default function SignUp() {
                   <label className="text-t300 text-body1">Name</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                      {name.length === 0 || isNameLengthExceeded ? (
-                        <Signuperror />
-                      ) : (
-                        <Signup />
-                      )}
+                      {11 > nameLength && nameLength > 0 && <Signup />}
+                      {isNameLengthExceeded && <Signuperror />}
                     </div>
                     <input
                       type="email"
-                      className="bg-t100 border border-t200 text-t500 text-body4 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2"
+                      className={inputClass}
                       value={name}
                       onChange={handleNameChange}
                       required
@@ -133,17 +119,16 @@ export default function SignUp() {
                   <label className="text-t300 text-body1">Blog Name</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                      {isNameAndBlogNameSame ||
-                      blogName.length === 0 ||
+                      {(blogNameLength > 0 && isNameAndBlogNameSame) ||
                       isBlogNameLengthExceeded ? (
                         <Signuperror />
                       ) : (
-                        <Signup />
+                        blogNameLength > 0 && <Signup />
                       )}
                     </div>
                     <input
                       type="email"
-                      className="bg-t100 border border-t200 text-t500 text-body4 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2"
+                      className={inputClass}
                       value={blogName}
                       onChange={handleBlogNameChange}
                       required
@@ -156,7 +141,7 @@ export default function SignUp() {
                   </div>
                   <div className="flex items-center justify-center">
                     <div
-                      className="flex items-center justify-center w-40 h-40 border-2 border-t200 border-dashed rounded-full cursor-pointer bg-t100 mt-5"
+                      className="flex items-center justify-center w-40 h-40 border border-t200 border-dashed rounded-full cursor-pointer bg-t100 mt-5"
                       onClick={handleUploadClick}
                     >
                       {selectedImage ? (
@@ -181,7 +166,7 @@ export default function SignUp() {
               </form>
               <div className="w-40 h-10 mt-20 mx-auto">
                 <Link href="/">
-                  <div className="w-full h-full bg-p200 rounded-full text-h4 text-t100 flex items-center justify-center cursor-pointer">
+                  <div className="w-full h-full bg-p200 rounded-full text-caption4 text-t100 flex items-center justify-center cursor-pointer pt-1">
                     시작하기
                   </div>
                 </Link>
@@ -192,4 +177,6 @@ export default function SignUp() {
       </div>
     </>
   );
-}
+};
+
+export default SignUp;
