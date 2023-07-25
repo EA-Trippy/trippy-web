@@ -45,7 +45,9 @@ export default function Header(props: HeaderProps) {
           </Link>
         </div>
         <div className="flex items-center space-x-10 mr-10 mt-7 mb-7">
-          <Search />
+          <Link href="/search">
+            <Search />
+          </Link>
           <Alarm />
           <div className="relative" ref={dropdownRef}>
             <Profile onClick={handleProfileClick} className="cursor-pointer" />
