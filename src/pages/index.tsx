@@ -44,7 +44,7 @@ const NEW_POSTS = [
     image: "/images/test-image.jpeg",
     title: "일본 간사이 지역 여행 Day1",
     body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일전",
+    date: "1일 전",
     profile_image: "/images/test-image.jpeg",
     nickname: "두재정",
     blogName: "두재정의 작은 공간",
