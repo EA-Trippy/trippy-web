@@ -10,6 +10,7 @@ interface DashBoardType {
   blogname: string;
 }
 
+// hi
 const Dashboard = (props: DashBoardPropType) => {
   const {dashboard} = props;
 
