@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import {useState, useEffect, useRef} from "react";
+import {useRouter} from "next/router";
 import Logo from "../../public/icons/logo.svg";
 import Search from "../../public/icons/search.svg";
 import Alarm from "../../public/icons/alarm.svg";
@@ -11,7 +11,7 @@ export interface HeaderProps {
 }
 
 export default function Header(props: HeaderProps) {
-  const { title } = props;
+  const {title} = props;
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
 
@@ -21,10 +21,7 @@ export default function Header(props: HeaderProps) {
     setIsProfileOpen(!isProfileOpen);
   };
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsProfileOpen(false);
     }
   };
@@ -56,9 +53,7 @@ export default function Header(props: HeaderProps) {
                 <ul>
                   <li>
                     <Link href="/">
-                      <p className="text-black text-8px mt-2 mb-7 ml-5">
-                        내 정보
-                      </p>
+                      <p className="text-black text-8px mt-2 mb-7 ml-5">내 정보</p>
                     </Link>
                   </li>
                   <li>
