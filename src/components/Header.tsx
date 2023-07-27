@@ -52,7 +52,7 @@ export default function Header(props: HeaderProps) {
               <div className="absolute mt-7 right-0 w-40 py-2 bg-white border border-gray-200 shadow z-10">
                 <ul>
                   <li>
-                    <Link href="/">
+                    <Link href="/mypage">
                       <p className="text-black text-8px mt-2 mb-7 ml-5">내 정보</p>
                     </Link>
                   </li>
