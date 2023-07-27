@@ -78,7 +78,7 @@ const BadgeData = [
 const TicketData = [
   {
     qrcode: "/images/test-image.jpeg",
-    qrnumber: "12",
+    qrnumber: "11",
   },
   {
     qrcode: "/images/test-image.jpeg",
@@ -86,11 +86,11 @@ const TicketData = [
   },
   {
     qrcode: "/images/test-image.jpeg",
-    qrnumber: "12",
+    qrnumber: "13",
   },
   {
     qrcode: "/images/test-image.jpeg",
-    qrnumber: "12",
+    qrnumber: "14",
   },
 ];
 
