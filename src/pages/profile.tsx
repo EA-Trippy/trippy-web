@@ -102,10 +102,10 @@ export default function Profile() {
         <div className="mx-20">
           <div className="mx-10 mt-[70px] flex flex-row">
             <div className="w-1/2 flex flex-col">
-              <div className="text-h3 mb-[43px]">userID's Dashboard</div>
+              <div className="text-h3 mb-[43px]">{"userID's Dashboard"}</div>
               <Dashboard dashboard={DashBoard} />
 
-              <div className="text-h3 mt-10 mb-[43px]">userID's Badge</div>
+              <div className="text-h3 mt-10 mb-[43px]">{"userID's Badge"}</div>
               <div className="w-[540px] h-[320px] grid grid-cols-5 gap-[35px]">
                 {BadgeData.map((badge, index) => {
                   return <Badge key={index} badge={badge} />;
@@ -113,7 +113,7 @@ export default function Profile() {
               </div>
             </div>
             <div className="w-1/2 flex flex-col">
-              <div className="text-h3 mb-[58px]">userID's Ticket</div>
+              <div className="text-h3 mb-[58px]">{"userID's Ticket"}</div>
               <div className="flex flex-col gap-[50px]">
                 {TicketData.map((ticket, index) => {
                   return <Ticket key={index} ticket={ticket} />;
