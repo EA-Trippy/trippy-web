@@ -21,17 +21,12 @@ interface PostType {
 }
 
 const TopPost = (props: TopPostPropType) => {
-  const { post } = props;
+  const {post} = props;
 
   return (
     <div className="border border-gray-100 shadow">
       <div className="relative w-full h-40">
-        <Image
-          src={post.image}
-          alt="Thumbnail"
-          fill
-          style={{ objectFit: "cover" }}
-        />
+        <Image src={post.image} alt="Thumbnail" fill style={{objectFit: "cover"}} />
       </div>
       <Link href="/">
         <div className="mb-5 mt-5">
@@ -49,7 +44,7 @@ const TopPost = (props: TopPostPropType) => {
               alt="Profile Image"
               width={24}
               height={24}
-              style={{ objectFit: "cover" }}
+              style={{objectFit: "cover"}}
             />
             <p className="ml-2 text-t300 text-caption1 mr-1">{`by ${post.nickname}`}</p>
           </Link>
@@ -57,15 +52,8 @@ const TopPost = (props: TopPostPropType) => {
         <div className="flex items-center">
           <Image alt="Heart" src={"/icons/heart.svg"} width={13} height={12} />
           <p className="text-t300 text-caption1 ml-1 mr-7">{post.likedCount}</p>
-          <Image
-            alt="Heart"
-            src={"/icons/comment.svg"}
-            width={13}
-            height={12}
-          />
-          <p className="text-t300 text-caption1 ml-1 mr-3">
-            {post.commentCount}
-          </p>
+          <Image alt="Heart" src={"/icons/comment.svg"} width={13} height={12} />
+          <p className="text-t300 text-caption1 ml-1 mr-3">{post.commentCount}</p>
         </div>
       </div>
     </div>
@@ -73,7 +61,7 @@ const TopPost = (props: TopPostPropType) => {
 };
 
 const TopPostList = (props: TopPostListPropType) => {
-  const { data } = props;
+  const {data} = props;
 
   return (
     <div className="grid grid-flow-col gap-16 mb-10">
