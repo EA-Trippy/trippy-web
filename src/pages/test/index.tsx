@@ -1,10 +1,18 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import axios from 'axios';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import Image from 'next/image';
 
 export default function Home() {
   const { data: session } = useSession();
+
+  const { data: currentUser } = useCurrentUser();
+
+  const username = 'username test';
+  const blogname = 'blogname test3';
+  // const image = 'http://www.codns.com/image/url11.png';
+
   const router = useRouter();
   return (
     <div className="flex flex-col">
@@ -17,21 +25,20 @@ export default function Home() {
       >
         Sign out
       </button>
-      {session && (
-        <>
-          <div>{session?.user?.id}</div>
-          <div>{session?.user?.name}</div>
-          <div>{session?.user?.email}</div>
-          <Image
-            src={session?.user.image!}
-            width={100}
-            height={100}
-            alt="image"
-            priority
-          />
-          <div>{session?.user?.provider}</div>
-        </>
-      )}
+      <button
+        onClick={() => {
+          axios.patch('/api/editProfile', {
+            username,
+            blogname,
+            // image,
+          });
+        }}
+      >
+        username 변경!
+      </button>
+      <div>{currentUser?.username}</div>
+      <div>{currentUser?.blogname}</div>
+      {/* <Image src={currentUser?.image} alt={'image'} width={200} height={200} /> */}
     </div>
   );
 }
