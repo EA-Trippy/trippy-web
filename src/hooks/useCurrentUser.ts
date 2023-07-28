@@ -1,29 +1,18 @@
-import { data } from 'autoprefixer';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-
-interface currentUserType {
-  id: string;
-  provider: string;
-  email: string;
-  username: string;
-  blogname: string;
-  image: string;
-  createdAt: string;
-  hasNotification: boolean;
-}
+import fetcher from '@/libs/fetcher';
+import { useQuery } from '@tanstack/react-query';
 
 const useCurrentUser = () => {
-  const [currentUser, setCurrentUser] = useState<currentUserType>();
+  const queryKey = 'api/currentUser';
 
-  useEffect(() => {
-    // useEffect를 사용하여 컴포넌트가 마운트된 후에 데이터를 가져옵니다.
-    axios.get('/api/currentUser').then((res) => {
-      setCurrentUser(res.data);
-    });
-  }, []);
+  const { data, isLoading, error } = useQuery([queryKey], () =>
+    fetcher(queryKey)
+  );
 
-  return currentUser;
+  return {
+    data,
+    error,
+    isLoading,
+  };
 };
 
 export default useCurrentUser;

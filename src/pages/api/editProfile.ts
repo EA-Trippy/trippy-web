@@ -15,13 +15,11 @@ export default async function handler(
 
     const { username, blogname, image } = req.body;
 
-    let data = req.body;
-
     const updatedUser = await prisma.user.update({
       where: {
         id: currentUser.id,
       },
-      data: data,
+      data: req.body,
     });
 
     return res.status(200).json(updatedUser);
