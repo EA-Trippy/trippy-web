@@ -1,22 +1,27 @@
-import { signIn, signOut, useSession } from 'next-auth/react';
+import usePosts from '@/hooks/usePosts';
+import { data } from 'autoprefixer';
 import axios from 'axios';
+import { signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import useCurrentUser from '@/hooks/useCurrentUser';
-import Image from 'next/image';
-import useUser from '@/hooks/useUser';
+import { useCallback } from 'react';
 
 export default function Home() {
-  // const { data: session } = useSession();
+  const body = '베베베베베베123123';
 
-  // const { data: currentUser } = useCurrentUser();
+  const { data: posts, refetch: refetchData } = usePosts();
 
-  const { data: fetchedUser } = useUser('64c36debeac3fde48e0e7c45');
+  console.log(posts);
 
-  console.log('fetchedUser: ', fetchedUser);
-
-  // const username = 'username test';
-  // const blogname = 'blogname test3';
-  // const image = 'http://www.codns.com/image/url11.png';
+  const onClick = useCallback(async () => {
+    try {
+      await axios.post('/api/posts', {
+        body,
+      });
+      refetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [body, refetchData]);
 
   const router = useRouter();
   return (
@@ -30,20 +35,8 @@ export default function Home() {
       >
         Sign out
       </button>
-      {/* <button
-        onClick={() => {
-          axios.patch('/api/editProfile', {
-            username,
-            blogname,
-            // image,
-          });
-        }}
-      >
-        username 변경!
-      </button>
-      <div>{currentUser?.username}</div>
-      <div>{currentUser?.blogname}</div> */}
-      {/* <Image src={currentUser?.image} alt={'image'} width={200} height={200} /> */}
+      {/* <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button> */}
+      <div>{posts && posts[0].body}</div>
     </div>
   );
 }
