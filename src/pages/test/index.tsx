@@ -1,24 +1,35 @@
-import { signIn, signOut, useSession } from 'next-auth/react';
+import usePost from '@/hooks/usePost';
+import usePosts from '@/hooks/usePosts';
+import { data } from 'autoprefixer';
 import axios from 'axios';
+import { signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import useCurrentUser from '@/hooks/useCurrentUser';
-import Image from 'next/image';
-import useUser from '@/hooks/useUser';
+import { useCallback } from 'react';
 
 export default function Home() {
-  // const { data: session } = useSession();
+  const body = '베베베베베베123123';
 
-  // const { data: currentUser } = useCurrentUser();
+  const { data: posts, refetch: refetchPosts } = usePosts();
 
-  const { data: fetchedUser } = useUser('64c36debeac3fde48e0e7c45');
+  const { data: post, refetch: refetchPost } = usePost(
+    '64c89a2c83c9fe587b8f9f1f'
+  );
 
-  console.log('fetchedUser: ', fetchedUser);
+  // console.log(posts);
 
-  // const username = 'username test';
-  // const blogname = 'blogname test3';
-  // const image = 'http://www.codns.com/image/url11.png';
+  const onClick = useCallback(async () => {
+    try {
+      await axios.post('/api/posts', {
+        body,
+      });
+      refetchPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [body, refetchPosts]);
 
   const router = useRouter();
+
   return (
     <div className="flex flex-col">
       <button onClick={() => signIn()}>Sign In</button>
@@ -30,20 +41,8 @@ export default function Home() {
       >
         Sign out
       </button>
-      {/* <button
-        onClick={() => {
-          axios.patch('/api/editProfile', {
-            username,
-            blogname,
-            // image,
-          });
-        }}
-      >
-        username 변경!
-      </button>
-      <div>{currentUser?.username}</div>
-      <div>{currentUser?.blogname}</div> */}
-      {/* <Image src={currentUser?.image} alt={'image'} width={200} height={200} /> */}
+      <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button>
+      {posts && posts.map((res: any) => <div>{res.body}</div>)}
     </div>
   );
 }
