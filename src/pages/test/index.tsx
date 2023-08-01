@@ -1,3 +1,4 @@
+import usePost from '@/hooks/usePost';
 import usePosts from '@/hooks/usePosts';
 import { data } from 'autoprefixer';
 import axios from 'axios';
@@ -8,22 +9,27 @@ import { useCallback } from 'react';
 export default function Home() {
   const body = '베베베베베베123123';
 
-  const { data: posts, refetch: refetchData } = usePosts();
+  const { data: posts, refetch: refetchPosts } = usePosts();
 
-  console.log(posts);
+  const { data: post, refetch: refetchPost } = usePost(
+    '64c89a2c83c9fe587b8f9f1f'
+  );
+
+  // console.log(posts);
 
   const onClick = useCallback(async () => {
     try {
       await axios.post('/api/posts', {
         body,
       });
-      refetchData();
+      refetchPosts();
     } catch (error) {
       console.log(error);
     }
-  }, [body, refetchData]);
+  }, [body, refetchPosts]);
 
   const router = useRouter();
+
   return (
     <div className="flex flex-col">
       <button onClick={() => signIn()}>Sign In</button>
@@ -35,8 +41,8 @@ export default function Home() {
       >
         Sign out
       </button>
-      {/* <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button> */}
-      <div>{posts && posts[0].body}</div>
+      <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button>
+      {posts && posts.map((res: any) => <div>{res.body}</div>)}
     </div>
   );
 }

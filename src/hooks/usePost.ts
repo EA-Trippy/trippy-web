@@ -1,14 +1,14 @@
 import fetcher from '@/libs/fetcher';
 import { useQuery } from '@tanstack/react-query';
 
-const usePosts = (userId?: string) => {
-  const queryKey = userId ? `/api/posts?userId=${userId}` : '/api/posts';
+const usePost = (postId: string) => {
+  const queryKey = postId ? `/api/posts/${postId}` : null;
 
   const { data, isLoading, error, refetch } = useQuery([queryKey], () =>
     fetcher(queryKey)
   );
 
-  // console.log('data:', data);
+  console.log('data:', data);
 
   return {
     data,
@@ -18,4 +18,4 @@ const usePosts = (userId?: string) => {
   };
 };
 
-export default usePosts;
+export default usePost;
