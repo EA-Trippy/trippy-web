@@ -31,6 +31,6 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
-    "prisma": "^5.0.0"
+    "prisma": "^5.1.0"
   }
 }
