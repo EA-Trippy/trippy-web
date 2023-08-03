@@ -13,10 +13,12 @@ datasource db {
 model User {
   id    String  @id @default(auto()) @map("_id") @db.ObjectId
   provider String
-  name String
-  blogname String?
+  sub String?
+
   email String
-  image String
+  username String?
+  blogname String?
+  image String? 
   createdAt DateTime @default(now())
   hasNotification Boolean?
 

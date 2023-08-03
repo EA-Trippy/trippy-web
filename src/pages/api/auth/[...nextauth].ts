@@ -25,8 +25,7 @@ export const authOptions: AuthOptions = {
         const exUser = await prisma.user.findFirst({
           where: {
             provider: account.provider,
-            name: token.name!,
-            email: token.email!,
+            sub: token.sub,
           },
         });
 
@@ -34,10 +33,9 @@ export const authOptions: AuthOptions = {
         if (!exUser) {
           await prisma.user.create({
             data: {
-              name: token.name!,
-              email: token.email!,
-              image: token.picture!,
               provider: account.provider,
+              sub: token.sub!,
+              email: token.email!,
             },
           });
         }
@@ -51,16 +49,11 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       const exUser = await prisma.user.findFirst({
         where: {
-          name: session.user?.name!,
-          email: session.user?.email!,
           provider: token.provider!,
+          sub: token.sub!,
         },
         select: {
           id: true,
-          name: true,
-          email: true,
-          image: true,
-          provider: true,
         },
       });
 
