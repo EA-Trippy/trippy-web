@@ -25,7 +25,7 @@ const TopPost = (props: TopPostPropType) => {
 
   return (
     <div className="border border-gray-100 shadow">
-      <div className="relative w-full h-40">
+      <div className="relative w-full h-52">
         <Image
           src={post.image}
           alt="Thumbnail"

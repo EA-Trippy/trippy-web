@@ -101,7 +101,7 @@ export default function Home() {
                 실시간 인기 포스트
               </div>
               <div>
-                <Link href="/">
+                <Link href="/write">
                   <div className="w-20 h-8 bg-p200 flex items-center justify-center rounded-md p-1">
                     <Pencil />
                     <p className="text-white text-subtitle3 ml-2">글 쓰기</p>
