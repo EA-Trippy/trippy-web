@@ -39,10 +39,10 @@ const NewPost = (props: NewPostPropType) => {
               </div>
             ))}
           </div>
-          <div className="mt-10">
-            <p className="text-[#808080]">{post.date}</p>
+          <div className="mt-10 pl-1.5">
+            <p className="text-t300 text-caption1">{post.date}</p>
           </div>
-          <div className="mt-11 flex items-center">
+          <div className="mt-11 flex items-center pl-1.5">
             <Image
               alt="Heart"
               src={"/icons/heart.svg"}
@@ -66,20 +66,20 @@ const NewPost = (props: NewPostPropType) => {
         <div className="w-[60%] flex-shrink-0">
           <p className="font-bold text-t500 text-h2 mb-10 mt-1">{post.title}</p>
           <p className="text-t300 text-body1 mb-10">{post.body}</p>
-          <div className="flex items-center">
+          <div className="flex items-center pb-1">
             <Link href="/">
               <Image
                 src={post.profile_image}
-                className="w-6 h-6 rounded-full mt-1"
+                className="w-6 h-6 rounded-full"
                 alt="Profile Image"
                 width={24}
                 height={24}
                 style={{ objectFit: "cover" }}
               />
             </Link>
-            <Link href="/" className="flex items-center mt-2">
-              <p className="ml-2 text-t400 text-body1">{post.blogName}</p>
-              <p className="ml-2 text-t300 text-body1">{post.nickname}</p>
+            <Link href="/" className="flex items-center">
+              <p className="ml-2 text-t400 text-body2">{post.blogName}</p>
+              <p className="ml-2 text-t300 text-body2">{post.nickname}</p>
             </Link>
           </div>
         </div>
