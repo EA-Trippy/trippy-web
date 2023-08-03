@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* speechBubble.css */
+
+/* Speech bubble container */
+.speech-bubble {
+  position: relative;
+  background-color: #333333;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+/* Arrow pointing upwards */
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 20%;
+  margin-left: -10px; /* Adjust the value to position the arrow */
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #333333 transparent;
+  /* Create the white base */
+}
