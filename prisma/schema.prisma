@@ -20,6 +20,7 @@ model User {
   blogname String?
   image String? 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   hasNotification Boolean?
 
   posts Post[]
@@ -32,6 +33,7 @@ model Post {
   id  String  @id @default(auto()) @map("_id") @db.ObjectId
   body String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   userId String @db.ObjectId
   likedIds String[] @db.ObjectId
   bookmarkedIds String[] @db.ObjectId
@@ -45,6 +47,7 @@ model Comment {
   id  String  @id @default(auto()) @map("_id") @db.ObjectId
   body String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   userId String @db.ObjectId
   postId String @db.ObjectId
 
