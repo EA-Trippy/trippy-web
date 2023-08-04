@@ -13,8 +13,6 @@ export default async function handler(
   try {
     const { currentUser } = await serverAuth(req, res);
 
-    const { username, blogname, image } = req.body;
-
     const updatedUser = await prisma.user.update({
       where: {
         id: currentUser.id,
