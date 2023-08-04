@@ -6,7 +6,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST' && req.method !== 'PATCH') {
+  if (
+    req.method !== 'POST' &&
+    req.method !== 'PATCH' &&
+    req.method !== 'DELETE'
+  ) {
     return res.status(405).end();
   }
 
@@ -38,6 +42,14 @@ export default async function handler(
         },
         data: {
           body,
+        },
+      });
+    }
+
+    if (req.method === 'DELETE') {
+      comment = await prisma.comment.delete({
+        where: {
+          id: commentId,
         },
       });
     }
