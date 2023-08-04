@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
 export default function Home() {
-  const body = '1번 댓글';
+  const body = '1번 게시글 수정';
 
   const { data: posts, refetch: refetchPosts } = usePost(
     '64ccb66c9d1f3616a855a908'
@@ -16,16 +16,13 @@ export default function Home() {
   console.log(posts);
 
   const onClick = useCallback(async () => {
-    // try {
-    //   await axios
-    //     .post('/api/comments', {
-    //       body: 'Comment Patch 2',
-    //       commentId: '64ccb7009d1f3616a855a909',
-    //     })
-    //     .then((res) => console.log(res));
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      await axios
+        .delete(`/api/posts/${'64ccb66c9d1f3616a855a908'}`, {})
+        .then((res) => console.log(res));
+    } catch (error) {
+      console.log(error);
+    }
   }, [body, refetchPosts]);
 
   const router = useRouter();
