@@ -7,22 +7,25 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
 export default function Home() {
-  const body = '베베베베베베123123';
+  const body = '1번 댓글';
 
-  const { data: posts, refetch: refetchPosts } = usePosts();
+  const { data: posts, refetch: refetchPosts } = usePost(
+    '64ccb66c9d1f3616a855a908'
+  );
+
+  console.log(posts);
 
   const onClick = useCallback(async () => {
-    try {
-      // await axios.post('/api/posts', {
-      //   body,
-      // });
-      // refetchPosts();
-      await axios
-        .get('api/airports', {})
-        .then((res) => console.log('res:', res.data));
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await axios
+    //     .post('/api/comments', {
+    //       body: 'Comment Patch 2',
+    //       commentId: '64ccb7009d1f3616a855a909',
+    //     })
+    //     .then((res) => console.log(res));
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }, [body, refetchPosts]);
 
   const router = useRouter();
@@ -39,7 +42,7 @@ export default function Home() {
         Sign out
       </button>
       <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button>
-      {posts && posts.map((res: any) => <div key={res.id}>{res.body}</div>)}
+      {/* {posts && posts.map((res: any) => <div key={res.id}>{res.body}</div>)} */}
     </div>
   );
 }
