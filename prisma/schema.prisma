@@ -69,3 +69,10 @@ model Notification {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model Airport {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  code String
+}
+
