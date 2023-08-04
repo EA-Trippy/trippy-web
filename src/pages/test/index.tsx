@@ -11,18 +11,15 @@ export default function Home() {
 
   const { data: posts, refetch: refetchPosts } = usePosts();
 
-  const { data: post, refetch: refetchPost } = usePost(
-    '64c89a2c83c9fe587b8f9f1f'
-  );
-
-  // console.log(posts);
-
   const onClick = useCallback(async () => {
     try {
-      await axios.post('/api/posts', {
-        body,
-      });
-      refetchPosts();
+      // await axios.post('/api/posts', {
+      //   body,
+      // });
+      // refetchPosts();
+      await axios
+        .get('api/airports', {})
+        .then((res) => console.log('res:', res.data));
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +39,7 @@ export default function Home() {
         Sign out
       </button>
       <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button>
-      {posts && posts.map((res: any) => <div>{res.body}</div>)}
+      {posts && posts.map((res: any) => <div key={res.id}>{res.body}</div>)}
     </div>
   );
 }
