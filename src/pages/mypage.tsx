@@ -43,103 +43,103 @@ const BookmarkData = [
 const BadgeData = [
   {
     image: "/images/test-image.jpeg",
-    region: "sex1",
+    region: "Badge1",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex2",
+    region: "Badge2",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex3",
+    region: "Badge3",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex4",
+    region: "Badge4",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex5",
+    region: "Badge5",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex6",
+    region: "Badge6",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex7",
+    region: "Badge7",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex8",
+    region: "Badge8",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex9",
+    region: "Badge9",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex10",
+    region: "Badge10",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex11",
+    region: "Badge11",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex12",
+    region: "Badge12",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex13",
+    region: "Badge13",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex14",
+    region: "Badge14",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex15",
+    region: "Badge15",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex16",
+    region: "Badge16",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex17",
+    region: "Badge17",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex18",
+    region: "Badge18",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex19",
+    region: "Badge19",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex20",
+    region: "Badge20",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex21",
+    region: "Badge21",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex22",
+    region: "Badge22",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex23",
+    region: "Badge23",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex24",
+    region: "Badge24",
   },
   {
     image: "/images/test-image.jpeg",
-    region: "sex25",
+    region: "Badge25",
   },
 ];
 
