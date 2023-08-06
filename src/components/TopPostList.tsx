@@ -1,5 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+//import styled from "styled-components";
+
+// export const StyledSlider = styled(Slider)`
+//   .slick-slide.slick-active {
+//     padding-right: 30px;
+//   }
+
+//   .slick-list {
+//     padding-right: -30px;
+//   }
+// `;
 
 interface TopPostPropType {
   post: PostType;
@@ -74,13 +88,36 @@ const TopPost = (props: TopPostPropType) => {
 
 const TopPostList = (props: TopPostListPropType) => {
   const { data } = props;
-
+  const settings = {
+    infinite: true,
+    slidesToShow: 3,
+    autoplay: true, // 자동 스크롤 사용 여부
+    autoplaySpeed: 5000, // 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+    pauseOnHover: true, // 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
+    swipeToSlide: true,
+    responsive: [
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 700,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
   return (
-    <div className="grid grid-flow-col gap-16 mb-10">
+    //<div className="grid grid-flow-col gap-16">
+    <Slider {...settings}>
       {data?.map((post, index) => {
         return <TopPost key={index} post={post} />;
       })}
-    </div>
+    </Slider>
+    //</div>
   );
 };
 

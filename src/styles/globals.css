@@ -7,7 +7,7 @@
 /* Speech bubble container */
 .speech-bubble {
   position: relative;
-  background-color: #333333;
+  background-color: #ccc;
   border: 1px solid #ccc;
   width: 100%;
 }
@@ -21,6 +21,6 @@
   margin-left: -10px; /* Adjust the value to position the arrow */
   border-width: 10px;
   border-style: solid;
-  border-color: transparent transparent #333333 transparent;
+  border-color: transparent transparent #ccc transparent;
   /* Create the white base */
 }
