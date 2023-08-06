@@ -4,12 +4,14 @@ import Link from "next/link";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import React, { useEffect, useRef, useState } from "react";
-import Editor from "@/components/Editor";
 import Airplane from "../../public/icons/airplane.svg";
 import Arrow from "../../public/icons/arrow.svg";
 import Calender from "../../public/icons/calender.svg";
 import People from "../../public/icons/people.svg";
 import Photoadd from "../../public/icons/photoadd.svg";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
 // const Viewer = styled.div`
 //   width: calc(50% - 40px);
@@ -268,14 +270,14 @@ const Write = () => {
                     className="absolute top-50 left-0 flex items-center justify-center w-full"
                     ref={PeopledropdownRef}
                   >
-                    <div className="speech-bubble px-10 py-2 rounded-lg mt-2">
+                    <div className="speech-bubble px-10 rounded-lg mt-2">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="">인원</p>
                         </div>
                         <div className="flex items-center">
                           <button
-                            className="p-2 text-t300 mr-4"
+                            className="p-2 text-t100 mr-4 text-h1"
                             onClick={() => {
                               if (selectedPeople > 1) {
                                 setSelectedPeople(selectedPeople - 1);
@@ -286,7 +288,7 @@ const Write = () => {
                           </button>
                           <div className="text-xl">{selectedPeople}명</div>
                           <button
-                            className="p-2 text-p100 ml-4"
+                            className="p-2 text-p100 ml-4 text-h3"
                             onClick={() => {
                               if (selectedPeople < 9) {
                                 setSelectedPeople(selectedPeople + 1);
