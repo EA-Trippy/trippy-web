@@ -1,31 +1,32 @@
-import usePost from '@/hooks/usePost';
-import usePosts from '@/hooks/usePosts';
-import { data } from 'autoprefixer';
+// /pages/index.js or another component
+
 import axios from 'axios';
 import { signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
+import React, { useRef } from 'react';
 
-export default function Home() {
-  const body = '1번 게시글 수정';
-
-  const { data: posts, refetch: refetchPosts } = usePost(
-    '64ccb66c9d1f3616a855a908'
-  );
-
-  console.log(posts);
-
-  const onClick = useCallback(async () => {
-    try {
-      await axios
-        .delete(`/api/posts/${'64ccb66c9d1f3616a855a908'}`, {})
-        .then((res) => console.log(res));
-    } catch (error) {
-      console.log(error);
-    }
-  }, [body, refetchPosts]);
-
+const Upload = () => {
   const router = useRouter();
+
+  const fileInput = useRef(null);
+
+  const handleUpload = async () => {
+    const files = fileInput.current.files;
+    const formData = new FormData();
+
+    // 이미지 파일 추가
+    for (let i = 0; i < files.length; i++) {
+      formData.append('file', files[i]);
+    }
+
+    await axios
+      .post('/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // 중요: 멀티파트(form-data) 형식으로 보내기 위해 헤더 설정
+        },
+      })
+      .then((res) => console.log(res));
+  };
 
   return (
     <div className="flex flex-col">
@@ -38,8 +39,10 @@ export default function Home() {
       >
         Sign out
       </button>
-      <button onClick={onClick}>버튼버튼버튼버튼버튼버튼버튼버튼버튼</button>
-      {/* {posts && posts.map((res: any) => <div key={res.id}>{res.body}</div>)} */}
+      <input type="file" ref={fileInput} multiple />
+      <button onClick={handleUpload}>Upload</button>
     </div>
   );
-}
+};
+
+export default Upload;

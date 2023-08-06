@@ -12,6 +12,9 @@ const nextConfig = {
   images: {
     domains: ['k.kakaocdn.net', 'ssl.pstatic.net', 'lh3.googleusercontent.com'],
   },
+  serverRuntimeConfig: {
+    googleApplicationCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  },
 };
 
 module.exports = nextConfig;
