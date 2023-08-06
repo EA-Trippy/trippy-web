@@ -1,13 +1,20 @@
 import Header from "@/components/Header";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Ticket from "@/components/Ticket";
 import Dashboard from "@/components/Dashboard";
 import Badge from "@/components/Badge";
 import Bookmark from "@/components/Bookmark";
+import Modal from "@/components/Modal";
 
 export default function Setting() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = () => {
+    setModalOpen(true);
+  };
+
   return (
     <>
       <div className="relative w-screen min-h-screen bg-white pb-10">
@@ -71,7 +78,18 @@ export default function Setting() {
                 </div>
                 <div className="w-full h-[24px] flex flex-row">
                   <div className="w-[155px] text-subtitle2">회원 탈퇴</div>
-                  <button className="border:none underline text-body1 text-p200">회원 탈퇴</button>
+                  <button className="border:none underline text-body1 text-p200" onClick={showModal}>
+                    회원 탈퇴
+                  </button>
+                  {modalOpen && (
+                    <Modal
+                      modal={{
+                        header: "ExampleModal",
+                        content: "modal content.",
+                      }}
+                      setModalOpen={setModalOpen}
+                    />
+                  )}
                 </div>
                 <div className="mt-[10px] text-caption3 text-t300">
                   탈퇴 시 모든 정보들이 삭제되며 복구되지 않습니다.
