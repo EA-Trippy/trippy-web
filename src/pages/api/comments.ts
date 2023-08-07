@@ -7,6 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (
+    req.method !== 'GET' &&
     req.method !== 'POST' &&
     req.method !== 'PATCH' &&
     req.method !== 'DELETE'
@@ -17,13 +18,32 @@ export default async function handler(
   try {
     const { currentUser } = await serverAuth(req, res);
     const { body, commentId } = req.body;
-    const { postId } = req.query;
+    const { postId, lastId } = req.query;
+    const isFirstPage = !lastId;
 
     if (!postId || typeof postId !== 'string') {
       throw new Error('Invalid ID');
     }
 
     let comment;
+
+    if (req.method === 'GET') {
+      comment = await prisma.comment.findMany({
+        take: 20,
+        ...(!isFirstPage && {
+          skip: 1,
+          cursor: {
+            id: lastId as string,
+          },
+        }),
+        where: {
+          postId,
+        },
+        include: {
+          user: true,
+        },
+      });
+    }
 
     if (req.method === 'POST') {
       comment = await prisma.comment.create({

@@ -28,6 +28,16 @@ const Upload = () => {
       .then((res) => console.log(res));
   };
 
+  const onClick = async () => {
+    // const lastId = '64d0bf1ff8fb9727d23cd10e';
+    // const body = 'comment 10';
+    await axios
+      .get(`/api/posts?userId=${'64ccb60f9d1f3616a855a907'}`, {
+        // params: { lastId },
+      })
+      .then((res) => console.log(res.data));
+  };
+
   return (
     <div className="flex flex-col">
       <button onClick={() => signIn()}>Sign In</button>
@@ -41,6 +51,7 @@ const Upload = () => {
       </button>
       <input type="file" ref={fileInput} multiple />
       <button onClick={handleUpload}>Upload</button>
+      <button onClick={onClick}>Create Post</button>
     </div>
   );
 };

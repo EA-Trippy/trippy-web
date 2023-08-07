@@ -26,18 +26,25 @@ export default async function handler(
     }
 
     if (req.method === 'GET') {
-      const { userId } = req.query;
+      const { userId, lastId } = req.query;
+      const isFirstPage = !lastId;
 
       let posts;
 
       if (userId && typeof userId === 'string') {
         posts = await prisma.post.findMany({
+          take: 20,
+          ...(!isFirstPage && {
+            skip: 1,
+            cursor: {
+              id: lastId as string,
+            },
+          }),
           where: {
             userId,
           },
           include: {
             user: true,
-            comments: true,
           },
           orderBy: {
             createdAt: 'desc',
@@ -45,9 +52,15 @@ export default async function handler(
         });
       } else {
         posts = await prisma.post.findMany({
+          take: 20,
+          ...(!isFirstPage && {
+            skip: 1,
+            cursor: {
+              id: lastId as string,
+            },
+          }),
           include: {
             user: true,
-            comments: true,
           },
           orderBy: {
             createdAt: 'desc',
