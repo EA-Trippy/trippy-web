@@ -26,12 +26,17 @@ model User {
   posts Post[]
   comments Comment[]
   notifications Notification[]
-  badges Badge[]
 }
 
 model Post {
   id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title String
   body String
+  startDate String
+  endDate String
+  thumbnail String?
+  people Int
+  tag String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId String @db.ObjectId
@@ -41,6 +46,7 @@ model Post {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   comments Comment[]
+  notifications Notification[]
 }
 
 model Comment {
@@ -55,27 +61,16 @@ model Comment {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
-model Badge {
-  id  String  @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  image String
-  userId String @db.ObjectId
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model Notification {
   id  String  @id @default(auto()) @map("_id") @db.ObjectId
   body String
   createdAt DateTime @default(now())
-  userId String @db.ObjectId
+  receiver String @db.ObjectId
+  sender String @db.ObjectId
+  postId String @db.ObjectId
+  isRead Boolean
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Airport {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  code String
+  user User @relation(fields: [receiver], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 

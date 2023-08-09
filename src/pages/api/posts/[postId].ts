@@ -30,14 +30,6 @@ export default async function handler(
         },
         include: {
           user: true,
-          comments: {
-            include: {
-              user: true,
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-          },
         },
       });
     }

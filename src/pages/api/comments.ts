@@ -53,6 +53,37 @@ export default async function handler(
           postId,
         },
       });
+
+      try {
+        const post = await prisma.post.findUnique({
+          where: {
+            id: postId,
+          },
+        });
+
+        if (post?.userId) {
+          await prisma.notification.create({
+            data: {
+              body: `'${currentUser.username}' 님이 회원님의 게시글에 댓글을 등록했습니다: "${body}"`,
+              receiver: post.userId,
+              sender: currentUser.id,
+              postId: post.id,
+              isRead: false,
+            },
+          });
+
+          await prisma.user.update({
+            where: {
+              id: post.userId,
+            },
+            data: {
+              hasNotification: true,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     if (req.method === 'PATCH') {

@@ -29,11 +29,11 @@ const Upload = () => {
   };
 
   const onClick = async () => {
-    // const lastId = '64d0bf1ff8fb9727d23cd10e';
-    // const body = 'comment 10';
+    const userId = '64d0bf1ff8fb9727d23cd10e';
+    // const body = 'comment 11';
     await axios
-      .get(`/api/posts?userId=${'64ccb60f9d1f3616a855a907'}`, {
-        // params: { lastId },
+      .delete(`/api/notifications/userId=${userId}`, {
+        data: { notificationId: '64d353d1b3d1c5ee5a1a0687' },
       })
       .then((res) => console.log(res.data));
   };
@@ -51,7 +51,7 @@ const Upload = () => {
       </button>
       <input type="file" ref={fileInput} multiple />
       <button onClick={handleUpload}>Upload</button>
-      <button onClick={onClick}>Create Post</button>
+      <button onClick={onClick}>Comment Notification</button>
     </div>
   );
 };
