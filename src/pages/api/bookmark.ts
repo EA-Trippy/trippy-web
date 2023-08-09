@@ -33,6 +33,37 @@ export default async function handler(
 
     if (req.method === 'POST') {
       updatedBookmarkedIds.push(currentUser.id);
+
+      try {
+        const post = await prisma.post.findUnique({
+          where: {
+            id: postId,
+          },
+        });
+
+        if (post?.userId) {
+          await prisma.notification.create({
+            data: {
+              body: `'${currentUser.username}' 님이 회원님의 '${post.title}' 게시글을 북마크 했습니다.`,
+              receiver: post.userId,
+              sender: currentUser.id,
+              postId: post.id,
+              isRead: false,
+            },
+          });
+
+          await prisma.user.update({
+            where: {
+              id: post.userId,
+            },
+            data: {
+              hasNotification: true,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     if (req.method === 'DELETE') {

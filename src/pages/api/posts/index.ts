@@ -13,11 +13,18 @@ export default async function handler(
   try {
     if (req.method === 'POST') {
       const { currentUser } = await serverAuth(req, res);
-      const { body } = req.body;
+      const { title, body, startDate, endDate, thumbnail, people, tag } =
+        req.body;
 
       const post = await prisma.post.create({
         data: {
+          title,
           body,
+          startDate,
+          endDate,
+          thumbnail,
+          people,
+          tag,
           userId: currentUser.id,
         },
       });
