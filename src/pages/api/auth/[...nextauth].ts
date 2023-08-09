@@ -57,7 +57,7 @@ export const authOptions: AuthOptions = {
         },
       });
 
-      session.user = exUser!;
+      session.user.id = exUser?.id!;
 
       return session;
     },

@@ -1,11 +1,14 @@
 // /pages/index.js or another component
 
+import useCurrentUser from '@/hooks/useCurrentUser';
 import axios from 'axios';
-import { signIn, signOut } from 'next-auth/react';
+import { getSession, signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 
 const Upload = () => {
+  const { data: user } = useCurrentUser();
+  console.log(user);
   const router = useRouter();
 
   const fileInput = useRef(null);
