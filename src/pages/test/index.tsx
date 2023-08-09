@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 
 const Upload = () => {
-  //   const { data: user } = useCurrentUser();
+  const { data: user } = useCurrentUser();
   //   console.log(user);
   //   const router = useRouter();
   //   const fileInput = useRef(null);
