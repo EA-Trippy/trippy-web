@@ -55,16 +55,16 @@ const Search = () => {
       <div className="relative w-screen min-h-screen bg-white mb-10">
         <Header title={"trippy_signup"}></Header>
         <div className="mx-20 mt-10 flex items-center justify-center mb-10">
-          <div className="mx-10 border border-p200 w-full h-[120px]">
-            <div className="flex items-center h-full ml-10">
-              <div className="mr-5">
+          <div className="mx-10 border border-p200 w-[60%] h-[64px]">
+            <div className="flex items-center h-full">
+              <div className='ml-6'>
                 <Search2 />
               </div>
 
               <input
                 type="text"
                 id="default-search"
-                className="block w-full h-full text-t500 text-[32px] p-5 outline-none"
+                className="block w-full h-full text-t500 text-[24px] p-5 outline-none"
                 placeholder="검색어를 입력해주세요."
                 required
                 value={searchValue} // 입력값 상태를 입력칸에 반영합니다.
