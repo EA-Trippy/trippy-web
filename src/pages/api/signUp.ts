@@ -18,5 +18,5 @@ export default async function handler(
   //     return res.status(400).end();
   //   }
 
-  return res.status(200).json({ name: 'John Doe' });
+  return res.status(200).json({ name: 'John' });
 }
