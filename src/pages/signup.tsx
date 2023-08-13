@@ -1,14 +1,17 @@
 import React, { useState, useRef } from "react";
 import Header from "@/components/Header";
-import Link from "next/link";
 import Signup from "../../public/icons/signup.svg";
 import Signuperror from "../../public/icons/signuperror.svg";
 import Photoadd from "../../public/icons/photoadd.svg";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
+  const router = useRouter();
   const [showContent, setShowContent] = useState(true);
   const [name, setName] = useState("");
   const [blogName, setBlogName] = useState("");
+  const [IMG_URL, setIMGURL] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,18 +34,36 @@ const SignUp = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
+  const handleFileChange = async (e: any) => {
+    // 내가 받을 파일은 하나기 때문에 index 0값의 이미지를 가짐
+    const file = e.target.files[0];
+    if (!file) return;
 
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result;
-        if (typeof result === "string") {
-          setSelectedImage(result);
-        }
-      };
-      reader.readAsDataURL(selectedFile);
+    // 이미지 화면에 띄우기
+    const reader = new FileReader();
+    // 파일을 불러오는 메서드, 종료되는 시점에 readyState는 Done(2)이 되고 onLoad 시작
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      if (reader.readyState === 2) {
+        // 파일 onLoad가 성공하면 2, 진행 중은 1, 실패는 0 반환
+        setSelectedImage(reader.result as string);
+      }
+    };
+
+    // 이미지 파일을 formData에 담아서 서버에 보내고, 서버는 받은 이미지 파일을 S3에 저장하고 받은 URL 값을 클라이언트로 반환해준다.
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      //
+      const result = await axios.post("/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // 중요: 멀티파트(form-data) 형식으로 보내기 위해 헤더 설정
+        },
+      });
+      setIMGURL(result.data);
+      console.log(IMG_URL);
+    } catch (e) {
+      console.error("업로드 실패");
     }
   };
 
@@ -54,6 +75,21 @@ const SignUp = () => {
 
   const inputClass =
     "bg-t100 border border-t200 text-t500 text-body4 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2";
+
+  const handleFormSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      await axios.patch("/api/editProfile", {
+        username: name,
+        blogname: blogName,
+        image: IMG_URL[0],
+      });
+      console.log(IMG_URL[0]);
+      router.push("/");
+    } catch (error) {
+      console.log("실패했어요ㅠ", error);
+    }
+  };
 
   return (
     <>
@@ -98,7 +134,7 @@ const SignUp = () => {
               <p className="text-p100 text-h2 text-center mx-20">
                 Trippy에 오신것을 환영합니다!
               </p>
-              <form className="mt-6 mx-10">
+              <form className="mt-6 mx-10" onSubmit={handleFormSubmit}>
                 <div className="mb-6">
                   <label className="text-t300 text-body1">Name</label>
                   <div className="relative">
@@ -107,9 +143,10 @@ const SignUp = () => {
                       {isNameLengthExceeded && <Signuperror />}
                     </div>
                     <input
-                      type="email"
+                      name="username"
+                      type="text"
                       className={inputClass}
-                      value={name}
+                      //value={name}
                       onChange={handleNameChange}
                       required
                     />
@@ -127,9 +164,10 @@ const SignUp = () => {
                       )}
                     </div>
                     <input
-                      type="email"
+                      name="blogname"
+                      type="text"
                       className={inputClass}
-                      value={blogName}
+                      //value={blogName}
                       onChange={handleBlogNameChange}
                       required
                     />
@@ -156,6 +194,7 @@ const SignUp = () => {
                       )}
                     </div>
                     <input
+                      name="image"
                       ref={fileInputRef}
                       className="hidden"
                       type="file"
@@ -163,14 +202,15 @@ const SignUp = () => {
                     />
                   </div>
                 </div>
-              </form>
-              <div className="w-40 h-10 mt-20 mx-auto">
-                <Link href="/">
-                  <div className="w-full h-full bg-p200 rounded-full text-caption4 text-t100 flex items-center justify-center cursor-pointer pt-1">
+                <div className="w-40 h-10 mt-20 mx-auto">
+                  <button
+                    type="submit"
+                    className="w-full h-full bg-p200 rounded-full text-caption4 text-t100 flex items-center justify-center cursor-pointer pt-1"
+                  >
                     시작하기
-                  </div>
-                </Link>
-              </div>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
