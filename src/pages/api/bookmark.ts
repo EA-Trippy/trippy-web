@@ -30,9 +30,11 @@ export default async function handler(
     }
 
     let updatedBookmarkedIds = [...(post.bookmarkedIds || [])];
+    let userBookmarkedIds = [...(currentUser.bookmarkIds || [])];
 
     if (req.method === 'POST') {
       updatedBookmarkedIds.push(currentUser.id);
+      userBookmarkedIds.push(postId);
 
       try {
         const post = await prisma.post.findUnique({
@@ -70,7 +72,20 @@ export default async function handler(
       updatedBookmarkedIds = updatedBookmarkedIds.filter(
         (bookmarkedId) => bookmarkedId !== currentUser.id
       );
+
+      userBookmarkedIds = userBookmarkedIds.filter(
+        (bookmarkedId) => bookmarkedId !== postId
+      );
     }
+
+    await prisma.user.update({
+      where: {
+        id: currentUser.id,
+      },
+      data: {
+        bookmarkIds: userBookmarkedIds,
+      },
+    });
 
     const updatedPost = await prisma.post.update({
       where: {
