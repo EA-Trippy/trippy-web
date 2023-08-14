@@ -10,11 +10,11 @@ export default async function handler(
   }
 
   try {
-    const { username } = req.body;
+    const { username } = req.query;
 
     const duplication = await prisma.user.findFirst({
       where: {
-        username: username,
+        username: username as string,
       },
     });
 
