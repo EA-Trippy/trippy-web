@@ -36,6 +36,7 @@ export const authOptions: AuthOptions = {
               provider: account.provider,
               sub: token.sub!,
               email: token.email!,
+              newUser: true,
             },
           });
         }
