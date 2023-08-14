@@ -7,8 +7,9 @@ import { ImageFormats } from "@xeger/quill-image-formats";
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
-export default function Editor() {
-  const [value, setValue] = useState(""); // Define and initialize 'value' state
+export default function Editor(props: { value: any; onChange: any }) {
+  const { value, onChange } = props;
+  //const [value, setValue] = useState(""); // Define and initialize 'value' state
   const quillRef = useRef<any>(null);
 
   // 이미지 처리를 하는 핸들러
@@ -132,7 +133,7 @@ export default function Editor() {
         className="h-[1000px] outline-none"
         theme="snow"
         value={value}
-        onChange={setValue}
+        onChange={onChange}
       />
       {/* <div>{value}</div> */}
       <div dangerouslySetInnerHTML={{ __html: value }} />
