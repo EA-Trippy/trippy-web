@@ -36,6 +36,7 @@ export const authOptions: AuthOptions = {
               provider: account.provider,
               sub: token.sub!,
               email: token.email!,
+              hasNotification: false,
               newUser: true,
             },
           });
@@ -62,23 +63,6 @@ export const authOptions: AuthOptions = {
 
       return session;
     },
-
-    // async signIn({ user, account, profile }) {
-    //   console.log('user:', user, 'account:', account, 'profile:', profile);
-
-    //   const exUser = await prisma.user.findFirst({
-    //     where: {
-    //       provider: account?.provider,
-    //       sub: account?.providerAccountId,
-    //     },
-    //   });
-
-    //   if (!exUser) {
-    //     return '/signup';
-    //   } else {
-    //     return true;
-    //   }
-    // },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
