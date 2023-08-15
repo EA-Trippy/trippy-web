@@ -347,6 +347,7 @@ const Write = () => {
                           </div>
                           <div className="flex items-center">
                             <button
+                              type="button"
                               className="p-2 text-t100 mr-4 text-h1"
                               onClick={() => {
                                 if (selectedPeople > 1) {
@@ -358,6 +359,7 @@ const Write = () => {
                             </button>
                             <div className="text-xl">{selectedPeople}명</div>
                             <button
+                              type="button"
                               className="p-2 text-p100 ml-4 text-h3"
                               onClick={() => {
                                 if (selectedPeople < 9) {
@@ -431,6 +433,7 @@ const Write = () => {
                       >
                         {tag}
                         <button
+                          type="button"
                           className="ml-2 text-t100 cursor-pointer focus:outline-none"
                           onClick={() => handleRemoveTag(tag)}
                         >

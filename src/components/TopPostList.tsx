@@ -3,17 +3,6 @@ import Link from "next/link";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-//import styled from "styled-components";
-
-// export const StyledSlider = styled(Slider)`
-//   .slick-slide.slick-active {
-//     padding-right: 30px;
-//   }
-
-//   .slick-list {
-//     padding-right: -30px;
-//   }
-// `;
 
 interface TopPostPropType {
   post: PostType;
@@ -24,53 +13,74 @@ interface TopPostListPropType {
 }
 
 interface PostType {
-  image: string;
+  thumbnail: string;
   title: string;
   body: string;
-  date: string;
-  profile_image: string;
-  nickname: string;
-  likedCount: number;
-  commentCount: number;
+  createdAt: string;
+  user: {
+    username: string;
+    image: string;
+  };
+  likedIds: string[];
+  comments: string[];
 }
 
 const TopPost = (props: TopPostPropType) => {
   const { post } = props;
+  const removeImgTags = (htmlContent: string) => {
+    const imgRegex = /<img[^>]*>/g; // Regular expression to match img tags
+    return htmlContent.replace(imgRegex, ""); // Remove img tags from the HTML
+  };
+
+  const sanitizedBody = removeImgTags(post.body);
 
   return (
     <div className="border border-gray-100 shadow">
       <div className="relative w-full h-52">
         <Image
-          src={post.image}
+          src={post.thumbnail}
           alt="Thumbnail"
           fill
           style={{ objectFit: "cover" }}
         />
       </div>
-      <Link href="/">
-        <div className="mb-5 mt-5">
-          <h1 className="text-black text-subtitle1 mb-3 ml-3">{post.title}</h1>
-          <p className="text-t300 text-body1 mb-3 mx-3">{post.body}</p>
-          <span className="text-t200 text-caption1 ml-3">{post.date}</span>
-        </div>
-      </Link>
+      <div>
+        <Link href="/">
+          <div className="mb-5 mt-5">
+            <h1 className="text-black text-subtitle1 mb-3 ml-3">
+              {post.title}
+            </h1>
+            <div className="text-t300 text-body1 mb-3 mx-3 h-28">
+              <div
+                className="truncate-ellipsis"
+                dangerouslySetInnerHTML={{ __html: sanitizedBody }}
+              />
+            </div>
+            <span className="text-t200 text-caption1 ml-3">
+              {post.createdAt.slice(0, 10)}
+            </span>
+          </div>
+        </Link>
+      </div>
       <div className="flex items-center justify-between mx-3 mb-3">
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
             <Image
-              src={post.profile_image}
+              src={post.user.image}
               className="w-6 h-6 rounded-full"
               alt="Profile Image"
               width={24}
               height={24}
               style={{ objectFit: "cover" }}
             />
-            <p className="ml-2 text-t300 text-caption1 mr-1">{`by ${post.nickname}`}</p>
+            <p className="ml-2 text-t300 text-caption1 mr-1">{`by ${post.user.username}`}</p>
           </Link>
         </div>
         <div className="flex items-center">
           <Image alt="Heart" src={"/icons/heart.svg"} width={13} height={12} />
-          <p className="text-t300 text-caption1 ml-1 mr-7">{post.likedCount}</p>
+          <p className="text-t300 text-caption1 ml-1 mr-7">
+            {post.likedIds.length}
+          </p>
           <Image
             alt="Heart"
             src={"/icons/comment.svg"}
@@ -78,7 +88,7 @@ const TopPost = (props: TopPostPropType) => {
             height={12}
           />
           <p className="text-t300 text-caption1 ml-1 mr-3">
-            {post.commentCount}
+            {/* {post.comments.length} */}0
           </p>
         </div>
       </div>
