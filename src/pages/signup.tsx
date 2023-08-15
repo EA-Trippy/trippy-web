@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import Signup from "../../public/icons/signup.svg";
 import Signuperror from "../../public/icons/signuperror.svg";
 import Photoadd from "../../public/icons/photoadd.svg";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const router = useRouter();
@@ -16,12 +17,63 @@ const SignUp = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  useEffect(() => {
+    const NewUser = async () => {
+      try {
+        const response = await axios.get("/api/currentUser");
+        console.log(response.data.newUser);
+
+        // 3. 리다이렉션 처리
+        if (response.data.newUser === true) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    NewUser();
+  });
+
+  const handleNameChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const username = event.target.value;
+    try {
+      const checkName = await axios.get("/api/checkUsername", {
+        params: { username },
+      });
+      console.log(checkName.data);
+      if (checkName.data.duplication == true) {
+        toast.error("이미 있는 이름입니다!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      console.log("실패했어요ㅠ", error);
+    }
   };
 
-  const handleBlogNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBlogName(event.target.value);
+  const handleBlogNameChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const blogname = event.target.value;
+    try {
+      const checkName = await axios.get("/api/checkBlogname", {
+        params: { blogname },
+      });
+      console.log(checkName.data);
+      if (checkName.data.duplication == true) {
+        toast.error("이미 있는 블로그이름입니다!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      console.log("실패했어요ㅠ", error);
+    }
   };
 
   const handleNextClick = () => {
@@ -78,11 +130,36 @@ const SignUp = () => {
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isNameLengthExceeded) {
+      toast.error("Name이 10자리 이상을 초과하였습니다.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+      return;
+    }
+    if (blogNameLength > 0 && isNameAndBlogNameSame) {
+      toast.error("Name과 BlogName을 다르게 설정해주세요.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+      return;
+    }
+    if (isBlogNameLengthExceeded) {
+      toast.error("BlogName이 10자리 이상을 초과하였습니다.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+      return;
+    }
     try {
       await axios.patch("/api/editProfile", {
         username: name,
         blogname: blogName,
         image: IMG_URL[0],
+        newUser: false,
       });
       console.log(IMG_URL[0]);
       router.push("/");
@@ -146,8 +223,10 @@ const SignUp = () => {
                       name="username"
                       type="text"
                       className={inputClass}
-                      //value={name}
-                      onChange={handleNameChange}
+                      onChange={(e) => {
+                        handleNameChange(e);
+                        setName(e.target.value);
+                      }}
                       required
                     />
                   </div>
@@ -167,8 +246,10 @@ const SignUp = () => {
                       name="blogname"
                       type="text"
                       className={inputClass}
-                      //value={blogName}
-                      onChange={handleBlogNameChange}
+                      onChange={(e) => {
+                        handleBlogNameChange(e);
+                        setBlogName(e.target.value);
+                      }}
                       required
                     />
                   </div>

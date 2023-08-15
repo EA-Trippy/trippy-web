@@ -136,7 +136,6 @@ export default function Editor(props: { value: any; onChange: any }) {
         onChange={onChange}
       />
       {/* <div>{value}</div> */}
-      <div dangerouslySetInnerHTML={{ __html: value }} />
       {/* Display the 'value' state */}
     </div>
   );
