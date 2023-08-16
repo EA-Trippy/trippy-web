@@ -34,9 +34,9 @@ const Upload = () => {
   //     .then((res) => console.log(res.data));
   // };
   // const onClickk = async () => {
-  //   const username = '최진영1';
+  //   const search = 'ㅇㅇㅇㅇ';
   //   await axios
-  //     .get('api/checkUsername', { params: { username } })
+  //     .get('api/search', { params: { search } })
   //     .then((res) => console.log('res:', res.data));
   // };
   // return (
