@@ -45,6 +45,7 @@ model Post {
   userId String @db.ObjectId
   likedIds String[] @db.ObjectId
   bookmarkedIds String[] @db.ObjectId
+  views Int
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

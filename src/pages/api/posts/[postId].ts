@@ -14,7 +14,16 @@ export default async function handler(
   }
 
   try {
-    const { bodyHTML, bodyText } = req.body;
+    const {
+      title,
+      bodyHTML,
+      bodyText,
+      startDate,
+      endDate,
+      thumbnail,
+      people,
+      tag,
+    } = req.body;
     const { postId } = req.query;
 
     if (!postId || typeof postId !== 'string') {
@@ -32,6 +41,17 @@ export default async function handler(
           user: true,
         },
       });
+
+      await prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          views: {
+            increment: 1,
+          },
+        },
+      });
     }
 
     if (req.method === 'PATCH') {
@@ -40,8 +60,14 @@ export default async function handler(
           id: postId,
         },
         data: {
+          title,
           bodyHTML,
           bodyText,
+          startDate,
+          endDate,
+          thumbnail,
+          people,
+          tag,
         },
       });
     }

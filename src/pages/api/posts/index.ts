@@ -35,6 +35,7 @@ export default async function handler(
           people,
           tag,
           userId: currentUser.id,
+          views: 0,
         },
       });
 
