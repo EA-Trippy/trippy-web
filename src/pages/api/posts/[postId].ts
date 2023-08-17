@@ -14,7 +14,7 @@ export default async function handler(
   }
 
   try {
-    const { body } = req.body;
+    const { bodyHTML, bodyText } = req.body;
     const { postId } = req.query;
 
     if (!postId || typeof postId !== 'string') {
@@ -40,7 +40,8 @@ export default async function handler(
           id: postId,
         },
         data: {
-          body,
+          bodyHTML,
+          bodyText,
         },
       });
     }

@@ -9,30 +9,44 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const { search } = req.query;
+  const { search, lastId } = req.query;
+
+  const searchText = search?.toString().trim();
+
+  const isFirstPage = !lastId;
 
   try {
     const searchResults = await prisma.post.findMany({
+      take: 20,
+      ...(!isFirstPage && {
+        skip: 1,
+        cursor: {
+          id: lastId as string,
+        },
+      }),
       where: {
         OR: [
           {
             title: {
-              contains: search as string,
+              contains: searchText,
               mode: 'insensitive',
             },
           },
           {
-            body: {
-              contains: search as string,
+            bodyText: {
+              contains: searchText,
               mode: 'insensitive',
             },
           },
           {
             tag: {
-              has: search as string,
+              has: searchText,
             },
           },
         ],
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 

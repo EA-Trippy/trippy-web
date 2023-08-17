@@ -21,10 +21,6 @@ export default async function handler(
     const { postId, lastId } = req.query;
     const isFirstPage = !lastId;
 
-    if (!postId || typeof postId !== 'string') {
-      throw new Error('Invalid ID');
-    }
-
     let comment;
 
     if (req.method === 'GET') {
@@ -37,7 +33,7 @@ export default async function handler(
           },
         }),
         where: {
-          postId,
+          postId: postId as string,
         },
         include: {
           user: true,
@@ -50,14 +46,14 @@ export default async function handler(
         data: {
           body,
           userId: currentUser.id,
-          postId,
+          postId: postId as string,
         },
       });
 
       try {
         const post = await prisma.post.findUnique({
           where: {
-            id: postId,
+            id: postId as string,
           },
         });
 

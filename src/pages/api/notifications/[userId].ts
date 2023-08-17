@@ -17,10 +17,6 @@ export default async function handler(
     const { userId, lastId } = req.query;
     const { notificationId } = req.body;
 
-    if (!userId || typeof userId !== 'string') {
-      throw new Error('Invalid ID');
-    }
-
     const isFirstPage = !lastId;
 
     let notifications;
@@ -35,7 +31,7 @@ export default async function handler(
           },
         }),
         where: {
-          receiver: userId,
+          receiver: userId as string,
         },
         orderBy: {
           createdAt: 'desc',
@@ -44,7 +40,7 @@ export default async function handler(
 
       await prisma.user.update({
         where: {
-          id: userId,
+          id: userId as string,
         },
         data: {
           hasNotification: false,
