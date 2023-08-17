@@ -43,10 +43,21 @@ export default async function handler(
     }
 
     if (req.method === 'GET') {
-      const { userId, lastId } = req.query;
+      const { userId, lastId, trendingPosts } = req.query;
       const isFirstPage = !lastId;
 
       let posts;
+
+      if (trendingPosts && typeof trendingPosts === 'boolean') {
+        posts = await prisma.post.findMany({
+          orderBy: {
+            views: 'desc',
+          },
+          take: 6,
+        });
+
+        return res.status(200).json(posts);
+      }
 
       if (userId && typeof userId === 'string') {
         posts = await prisma.post.findMany({
