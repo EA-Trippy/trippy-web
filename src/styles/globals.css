@@ -24,3 +24,10 @@
   border-color: transparent transparent #ccc transparent;
   /* Create the white base */
 }
+
+/* Add this CSS to your styles */
+.truncate-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

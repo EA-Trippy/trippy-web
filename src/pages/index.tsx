@@ -1,114 +1,15 @@
 import Header from "@/components/Header";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import TopPostList from "@/components/TopPostList";
 import NewPostList from "@/components/NewPostList";
 import Pencil from "../../public/icons/pencil.svg";
-
-const TOP_POSTS = [
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "2023년 7월 1일",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day2",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "2023년 7월 1일",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day3",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "2023년 7월 1일",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day4",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "2023년 7월 1일",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day5",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "2023년 7월 1일",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day6",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "2023년 7월 1일",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    likedCount: 10,
-    commentCount: 500,
-  },
-];
-
-const NEW_POSTS = [
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일 전",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    blogName: "두재정의 작은 공간",
-    tags: ["일본", "오사카", "교토", "나라"],
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일전",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    blogName: "두재정의 작은 공간",
-    tags: ["일본", "오사카", "후쿠오카", "나라"],
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일전",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    blogName: "두재정의 작은 공간",
-    tags: ["일본", "나라", "오사카"],
-    likedCount: 10,
-    commentCount: 500,
-  },
-];
+import axios from "axios";
 
 export default function Home() {
   const imageRef = useRef<HTMLImageElement>(null);
+  const [topPosts, setTopPosts] = useState([]);
+  const [newPosts, setNewPosts] = useState([]);
 
   useEffect(() => {
     if (imageRef.current) {
@@ -117,6 +18,27 @@ export default function Home() {
         imageRef.current.style.width = `${boxWidth}px`;
       }
     }
+    const TOPPOST = async () => {
+      try {
+        const response = await axios.get("/api/posts");
+        console.log(response.data);
+        setTopPosts(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    const NEWPOST = async () => {
+      try {
+        const response = await axios.get("/api/posts");
+        setNewPosts(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    TOPPOST();
+    NEWPOST();
   }, []);
 
   return (
@@ -139,12 +61,12 @@ export default function Home() {
               </div>
             </div>
 
-            <TopPostList data={TOP_POSTS} />
+            <TopPostList data={topPosts} />
 
             <p className="text-p100 mb-5 font-bold mt-10">최신 포스트</p>
             <hr className="border border-[#F5F5F5]" />
 
-            <NewPostList data={NEW_POSTS} />
+            <NewPostList data={newPosts} />
           </div>
         </div>
       </div>
