@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useSession, signOut } from "next-auth/react";
+import {useState, useEffect, useRef} from "react";
+import {useSession, signOut} from "next-auth/react";
 import Logo from "../../public/icons/logo.svg";
 import Search from "../../public/icons/search.svg";
 import Alarm from "../../public/icons/alarm.svg";
@@ -20,10 +20,7 @@ export default function Header(props: HeaderProps) {
     setIsProfileOpen(!isProfileOpen);
   };
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsProfileOpen(false);
     }
   };
@@ -46,7 +43,7 @@ export default function Header(props: HeaderProps) {
     };
   }, []);
 
-  const { data: session } = useSession();
+  const {data: session} = useSession();
 
   if (session) {
     return (
@@ -64,22 +61,20 @@ export default function Header(props: HeaderProps) {
             <Alarm />
             <div className="relative" ref={dropdownRef}>
               <Image
-                src={userImage || "/icons/profile.svg"}
+                src={userImage}
                 alt="Profile"
                 width={48}
                 height={48}
                 onClick={handleProfileClick}
                 className="w-12 h-12 cursor-pointer rounded-full"
-                style={{ objectFit: "cover" }}
+                style={{objectFit: "cover"}}
               />
               {isProfileOpen && (
                 <div className="absolute mt-7 right-0 w-40 py-2 bg-white border border-gray-200 shadow z-10">
                   <ul>
                     <li>
                       <Link href="/mypage">
-                        <p className="text-black text-8px mt-2 mb-7 ml-5">
-                          내 정보
-                        </p>
+                        <p className="text-black text-8px mt-2 mb-7 ml-5">내 정보</p>
                       </Link>
                     </li>
                     <li>
@@ -89,9 +84,7 @@ export default function Header(props: HeaderProps) {
                     </li>
                     <li>
                       <Link href="/" onClick={() => signOut()}>
-                        <p className="text-black text-8px mb-2 ml-5">
-                          로그아웃
-                        </p>
+                        <p className="text-black text-8px mb-2 ml-5">로그아웃</p>
                       </Link>
                     </li>
                   </ul>
