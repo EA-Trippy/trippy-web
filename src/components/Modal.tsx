@@ -27,7 +27,7 @@ const Modal = ({modal, setModalOpen, modalOpen}: ModalPropType) => {
     setModalOpen("off");
   };
 
-  const executeion = async (category: string) => {
+  const executetion = async (category: string) => {
     switch (category) {
       case "removeImage":
         axios.patch("/api/editProfile", {
@@ -39,7 +39,7 @@ const Modal = ({modal, setModalOpen, modalOpen}: ModalPropType) => {
         });
       case "setBlog":
         axios.patch("/api/editProfile", {
-          userblog: changeId,
+          blogname: changeId,
         });
     }
   };
@@ -55,7 +55,26 @@ const Modal = ({modal, setModalOpen, modalOpen}: ModalPropType) => {
             <button
               className="w-[48px] h-[24px] text-caption3 text-t100 bg-p200"
               onClick={() => {
-                executeion(modalOpen);
+                executetion(modalOpen);
+                closeModal();
+              }}
+            >
+              확인
+            </button>
+            <button className="w-[48px] h-[24px] text-caption3 bg-t200" onClick={closeModal}>
+              취소
+            </button>
+          </div>
+        </div>
+      ) : modalOpen === "changeImage" ? (
+        <div className={`shadow-md h-[120px] w-[300px] bg-t100`}>
+          <div className="mt-[10px] ml-[10px] text-body2">{modal.header}</div>
+          <div className={`ml-[10px] h-[52px] flex items-center text-caption3 text-t300`}>{modal.content}</div>
+          <div className="mr-[10px] flex flex-row-reverse gap-[10px]">
+            <button
+              className="w-[48px] h-[24px] text-caption3 text-t100 bg-p200"
+              onClick={() => {
+                executetion("removeImage");
                 closeModal();
               }}
             >
@@ -74,7 +93,7 @@ const Modal = ({modal, setModalOpen, modalOpen}: ModalPropType) => {
             <button
               className="w-[48px] h-[24px] text-caption3 text-t100 bg-p200"
               onClick={() => {
-                executeion("removeImage");
+                executetion("removeImage");
                 closeModal();
               }}
             >

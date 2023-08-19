@@ -51,9 +51,24 @@ export default function Setting() {
                     height={160}
                     style={{objectFit: "cover"}}
                   />
-                  <button className="w-[90px] h-[21px] mt-[9px] flex justify-center items-center bg-p200 text-caption1 text-t100 rounded-md">
+                  <button
+                    className="w-[90px] h-[21px] mt-[9px] flex justify-center items-center bg-p200 text-caption1 text-t100 rounded-md"
+                    onClick={() => {
+                      showModal("changeImage");
+                    }}
+                  >
                     이미지 업로드
                   </button>
+                  {modalOpen === "changeImage" && (
+                    <Modal
+                      modal={{
+                        header: "이미지 변경",
+                        content: "프로필 이미지를 제거하시겠습니까?",
+                      }}
+                      setModalOpen={setModalOpen}
+                      modalOpen={modalOpen}
+                    />
+                  )}
                   <button
                     className="w-[90px] h-[21px] mt-[7px] flex justify-center items-center bg-t100 text-caption1 text-p200 rounded-md"
                     onClick={() => {
