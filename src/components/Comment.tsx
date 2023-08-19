@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Plus from "../../public/icons/plus.svg";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 interface CommentPropType {
   comment: CommentType;
@@ -12,10 +14,13 @@ interface CommentListPropType {
 }
 
 interface CommentType {
+  id: string;
   body: string;
-  profile_image: string;
-  blogName: string;
-  date: string;
+  user: {
+    blogname: string;
+    image: string;
+  };
+  createdAt: string;
 }
 
 const Comment = (props: CommentPropType) => {
@@ -24,6 +29,8 @@ const Comment = (props: CommentPropType) => {
   const [showToast, setShowToast] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedBody, setEditedBody] = useState(comment.body);
+  const router = useRouter();
+  const { id } = router.query;
 
   const handleRemoveClick = () => {
     setIsRemoveOpen(!isRemoveOpen);
@@ -33,8 +40,15 @@ const Comment = (props: CommentPropType) => {
     setIsRemoveOpen(!isRemoveOpen);
   };
 
-  const handelModalYes = () => {
+  const handelModalYes = async () => {
+    try {
+      // You can use commentText state when sending the comment to the server
+      await axios.delete(`/api/comments?commentId=${comment.id}`);
+    } catch (error) {
+      console.error("Error handling comment submission:", error);
+    }
     setIsRemoveOpen(!isRemoveOpen);
+    setIsEditMode(false);
     setShowToast(true); // Show the toast message
     setTimeout(() => {
       setShowToast(false); // Hide the toast message after a certain time (e.g., 3000ms)
@@ -49,7 +63,20 @@ const Comment = (props: CommentPropType) => {
     setIsEditMode(true);
   };
 
-  const handleEditSave = () => {
+  const handleEditSave = async () => {
+    try {
+      // You can use commentText state when sending the comment to the server
+      await axios.patch(`/api/comments?commentId=${comment.id}`, {
+        body: editedBody,
+      });
+    } catch (error) {
+      console.error("Error handling comment submission:", error);
+    }
+    setIsEditMode(false);
+  };
+
+  const handleEditCancel = () => {
+    setEditedBody(comment.body);
     setIsEditMode(false);
   };
 
@@ -76,7 +103,7 @@ const Comment = (props: CommentPropType) => {
           <div>
             <Link href="/">
               <Image
-                src={comment.profile_image}
+                src={comment.user.image}
                 className="w-[52px] h-[52px] rounded-full mr-2"
                 alt="Profile Image"
                 width={52}
@@ -88,10 +115,10 @@ const Comment = (props: CommentPropType) => {
           <div>
             <Link href="/">
               <div className="text-t500 text-body4 mt-1">
-                {comment.blogName}
+                {comment.user.blogname}
               </div>
             </Link>
-            <div className="text-t200 text-body1">{comment.date}</div>
+            <div className="text-t200 text-body1">{comment.createdAt}</div>
           </div>
         </div>
         <div className="flex items-center">
@@ -111,8 +138,10 @@ const Comment = (props: CommentPropType) => {
           {isRemoveOpen && (
             <div className="h-screen w-full fixed left-0 top-0 flex items-center justify-center bg-black bg-opacity-70 text-center">
               <div className="bg-white rounded-2xl w-11/12 md:w-1/3">
-                <p className="text-h2 text-t500 ml-5 mt-10">댓글 삭제</p>
-                <p className="text-h3 text-t400 ml-5 mt-10">
+                <p className="text-h2 text-t500 flex justify-center mt-10">
+                  댓글 삭제
+                </p>
+                <p className="text-h3 text-t400 flex justify-center mt-10">
                   정말로 삭제하시겠습니까?
                 </p>
                 <div className="flex items-center justify-end mr-5 mt-10 my-3">
@@ -148,7 +177,7 @@ const Comment = (props: CommentPropType) => {
           <div className="flex items-center justify-end mb-5 mt-3">
             <button
               className="text-p200 text-subtitle1 w-15 h-10 p-2 hover:bg-gray-100 rounded-lg"
-              onClick={handleEditSave}
+              onClick={handleEditCancel}
             >
               <p className="mt-[1.5px]">취소</p>
             </button>
@@ -180,9 +209,39 @@ const Comment = (props: CommentPropType) => {
 
 const CommentList = (props: CommentListPropType) => {
   const { data } = props;
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [commentText, setCommentText] = useState(""); // State to manage comment text
+
+  const PostComment = async () => {
+    try {
+      // You can use commentText state when sending the comment to the server
+      await axios.post(`/api/comments?postId=${id}`, { body: commentText });
+      setCommentText("");
+    } catch (error) {
+      console.error("Error handling comment submission:", error);
+    }
+  };
 
   return (
     <div className="mt-10">
+      <div className="text-body1 text-t300">{data.length}개의 댓글</div>
+      <textarea
+        className="placeholder:text-body1 placeholder:text-t300 block bg-white w-full h-40 border border-[#E6E6E6] rounded-md p-3 shadow-sm mt-3"
+        placeholder="댓글을 작성해주세요"
+        value={commentText} // Use the commentText state here
+        onChange={(e) => setCommentText(e.target.value)} // Update the commentText state on input change
+      />
+      <div className="flex items-center justify-end">
+        <button
+          className="w-[112px] h-10 bg-p200 text-subtitle1 text-t100 text-center rounded-lg mt-3"
+          type="button"
+          onClick={PostComment}
+        >
+          <p className="mt-1">댓글 작성</p>
+        </button>
+      </div>
       {data?.map((comment, index) => {
         return <Comment key={index} comment={comment} />;
       })}
