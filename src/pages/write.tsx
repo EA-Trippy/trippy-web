@@ -215,7 +215,8 @@ const Write = () => {
     try {
       await axios.post("/api/posts", {
         title: title,
-        body: editorValue,
+        bodyHTML: editorValue,
+        bodyText: editorValue.replace(/(<([^>]+)>)/gi, ""),
         startDate: startDate,
         endDate: finalDate,
         thumbnail: IMG_URL[0],

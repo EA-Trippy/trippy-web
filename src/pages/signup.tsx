@@ -24,7 +24,7 @@ const SignUp = () => {
         console.log(response.data.newUser);
 
         // 3. 리다이렉션 처리
-        if (response.data.newUser === true) {
+        if (response.data.newUser === false) {
           router.push("/");
         }
       } catch (error) {
