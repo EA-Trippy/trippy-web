@@ -1,4 +1,5 @@
 import { Storage } from '@google-cloud/storage';
+import { v4 } from 'uuid';
 
 export interface MulterFile {
   fieldname: String;
@@ -17,7 +18,7 @@ export const uploadToGCS = (file: MulterFile) => {
   const bucketName = 'trippy_image';
   const bucket = storage.bucket(bucketName);
 
-  const filename = `${Date.now()}`;
+  const filename = `${Date.now()}_${v4()}`;
   const blob = bucket.file(filename);
   const stream = blob.createWriteStream({
     metadata: {
