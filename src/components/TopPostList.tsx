@@ -13,9 +13,10 @@ interface TopPostListPropType {
 }
 
 interface PostType {
+  id: string;
   thumbnail: string;
   title: string;
-  body: string;
+  bodyHTML: string;
   createdAt: string;
   user: {
     username: string;
@@ -31,34 +32,34 @@ const TopPost = (props: TopPostPropType) => {
     const imgRegex = /<img[^>]*>/g; // Regular expression to match img tags
     return htmlContent.replace(imgRegex, ""); // Remove img tags from the HTML
   };
+  const postId = post.id;
 
-  const sanitizedBody = removeImgTags(post.body);
+  const sanitizedBody = removeImgTags(post.bodyHTML);
 
   return (
     <div className="border border-gray-100 shadow">
       <div className="relative w-full h-52">
-        <Image
-          src={post.thumbnail}
-          alt="Thumbnail"
-          fill
-          style={{ objectFit: "cover" }}
-        />
+        <Link href={`posts/${postId}`}>
+          <Image
+            src={post.thumbnail}
+            alt="Thumbnail"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </Link>
       </div>
       <div>
-        <Link href="/">
+        <Link href={`posts/${postId}`}>
           <div className="mb-5 mt-5">
             <h1 className="text-black text-subtitle1 mb-3 ml-3">
               {post.title}
             </h1>
-            <div className="text-t300 text-body1 mb-3 mx-3 h-28">
-              <div
-                className="truncate-ellipsis"
-                dangerouslySetInnerHTML={{ __html: sanitizedBody }}
-              />
+            <div className="truncate-ellipsis text-t300 text-body1 mb-3 mx-3 h-28">
+              <div dangerouslySetInnerHTML={{ __html: sanitizedBody }} />
             </div>
-            <span className="text-t200 text-caption1 ml-3">
+            <div className="text-t200 text-caption1 ml-3 mt-1">
               {post.createdAt.slice(0, 10)}
-            </span>
+            </div>
           </div>
         </Link>
       </div>
@@ -98,6 +99,9 @@ const TopPost = (props: TopPostPropType) => {
 
 const TopPostList = (props: TopPostListPropType) => {
   const { data } = props;
+
+  const slicedData = data.slice(0, 6);
+
   const settings = {
     infinite: true,
     slidesToShow: 3,
@@ -123,8 +127,8 @@ const TopPostList = (props: TopPostListPropType) => {
   return (
     //<div className="grid grid-flow-col gap-16">
     <Slider {...settings}>
-      {data?.map((post, index) => {
-        return <TopPost key={index} post={post} />;
+      {slicedData?.map((post) => {
+        return <TopPost key={post.id} post={post} />;
       })}
     </Slider>
     //</div>

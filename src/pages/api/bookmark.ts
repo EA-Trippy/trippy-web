@@ -1,22 +1,22 @@
-import serverAuth from '@/libs/serverAuth';
-import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/libs/prismadb';
+import serverAuth from "@/libs/serverAuth";
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/libs/prismadb";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST' && req.method !== 'DELETE') {
+  if (req.method !== "POST" && req.method !== "DELETE") {
     return res.status(405).end();
   }
 
   try {
-    const { postId } = req.body;
+    const { postId } = req.query;
 
     const { currentUser } = await serverAuth(req, res);
 
-    if (!postId || typeof postId !== 'string') {
-      throw new Error('Invalid ID');
+    if (!postId || typeof postId !== "string") {
+      throw new Error("Invalid ID");
     }
 
     const post = await prisma.post.findUnique({
@@ -26,13 +26,13 @@ export default async function handler(
     });
 
     if (!post) {
-      throw new Error('Invalid ID');
+      throw new Error("Invalid ID");
     }
 
     let updatedBookmarkedIds = [...(post.bookmarkedIds || [])];
     let userBookmarkedIds = [...(currentUser.bookmarkIds || [])];
 
-    if (req.method === 'POST') {
+    if (req.method === "POST") {
       updatedBookmarkedIds.push(currentUser.id);
       userBookmarkedIds.push(postId);
 
@@ -68,7 +68,7 @@ export default async function handler(
       }
     }
 
-    if (req.method === 'DELETE') {
+    if (req.method === "DELETE") {
       updatedBookmarkedIds = updatedBookmarkedIds.filter(
         (bookmarkedId) => bookmarkedId !== currentUser.id
       );

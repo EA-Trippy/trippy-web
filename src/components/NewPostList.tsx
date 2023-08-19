@@ -10,9 +10,10 @@ interface NewPostListPropType {
 }
 
 interface PostType {
+  id: string;
   thumbnail: string;
   title: string;
-  body: string;
+  bodyHTML: string;
   createdAt: string;
   user: {
     username: string;
@@ -30,8 +31,9 @@ const NewPost = (props: NewPostPropType) => {
     const imgRegex = /<img[^>]*>/g; // Regular expression to match img tags
     return htmlContent.replace(imgRegex, ""); // Remove img tags from the HTML
   };
+  const postId = post.id;
 
-  const sanitizedBody = removeImgTags(post.body);
+  const sanitizedBody = removeImgTags(post.bodyHTML);
 
   return (
     <div className="h-[290px] py-10">
@@ -76,32 +78,36 @@ const NewPost = (props: NewPostPropType) => {
           </div>
         </div>
         <div className="w-[60%] flex-shrink-0">
-          <p className="font-bold text-t500 text-h2 mb-10 mt-1">{post.title}</p>
-          <div
-            className="truncate-ellipsis text-t300 text-body1 mb-10 h-16"
-            dangerouslySetInnerHTML={{ __html: sanitizedBody }}
-          />
-          <div className="flex py-auto">
-            <Link href="/">
-              <Image
-                src={post.user.image}
-                className="w-6 h-6 rounded-full"
-                alt="Profile Image"
-                width={24}
-                height={24}
-                style={{ objectFit: "cover" }}
-              />
-            </Link>
-            <p className="pt-[1.5px] ml-2 text-t400 text-body2">
-              {post.user.blogname}
+          <Link href={`posts/${postId}`}>
+            <p className="font-bold text-t500 text-h2 mb-10 mt-1">
+              {post.title}
             </p>
-            <p className="pt-[1.5px] ml-2 text-t300 text-body2">
-              {post.user.username}
-            </p>
-          </div>
+            <div
+              className="truncate-ellipsis text-t300 text-body1 mb-10 h-16"
+              dangerouslySetInnerHTML={{ __html: sanitizedBody }}
+            />
+            <div className="flex py-auto">
+              <Link href="/">
+                <Image
+                  src={post.user.image}
+                  className="w-6 h-6 rounded-full"
+                  alt="Profile Image"
+                  width={24}
+                  height={24}
+                  style={{ objectFit: "cover" }}
+                />
+              </Link>
+              <p className="pt-[1.5px] ml-2 text-t400 text-body2">
+                {post.user.blogname}
+              </p>
+              <p className="pt-[1.5px] ml-2 text-t300 text-body2">
+                {post.user.username}
+              </p>
+            </div>
+          </Link>
         </div>
         <div className="w-[15%] flex-shrink-0 flex items-center">
-          <Link href="/">
+          <Link href={`posts/${postId}`}>
             <Image
               src={post.thumbnail}
               alt="Thumbnail"
