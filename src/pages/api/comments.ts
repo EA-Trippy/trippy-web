@@ -1,29 +1,28 @@
-import serverAuth from "@/libs/serverAuth";
-import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "@/libs/prismadb";
+import serverAuth from '@/libs/serverAuth';
+import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '@/libs/prismadb';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (
-    req.method !== "GET" &&
-    req.method !== "POST" &&
-    req.method !== "PATCH" &&
-    req.method !== "DELETE"
+    req.method !== 'GET' &&
+    req.method !== 'POST' &&
+    req.method !== 'PATCH' &&
+    req.method !== 'DELETE'
   ) {
     return res.status(405).end();
   }
 
   try {
-    const { currentUser } = await serverAuth(req, res);
     const { body } = req.body;
     const { postId, lastId, commentId } = req.query;
     const isFirstPage = !lastId;
 
     let comment;
 
-    if (req.method === "GET") {
+    if (req.method === 'GET') {
       comment = await prisma.comment.findMany({
         take: 20,
         ...(!isFirstPage && {
@@ -41,7 +40,8 @@ export default async function handler(
       });
     }
 
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
+      const { currentUser } = await serverAuth(req, res);
       comment = await prisma.comment.create({
         data: {
           body,
@@ -82,7 +82,7 @@ export default async function handler(
       }
     }
 
-    if (req.method === "PATCH") {
+    if (req.method === 'PATCH') {
       comment = await prisma.comment.update({
         where: {
           id: commentId as string,
@@ -93,7 +93,7 @@ export default async function handler(
       });
     }
 
-    if (req.method === "DELETE") {
+    if (req.method === 'DELETE') {
       comment = await prisma.comment.delete({
         where: {
           id: commentId as string,
