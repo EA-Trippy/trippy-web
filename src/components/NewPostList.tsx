@@ -38,7 +38,7 @@ const NewPost = (props: NewPostPropType) => {
   return (
     <div className="h-[290px] py-10">
       <div className="flex justify-between">
-        <div className="w-[15%] flex flex-col first:justify-between">
+        <div className="w-[15%] flex flex-col first:justify-between max-h-[210px]">
           <div className="flex items-start flex-wrap mt-2">
             {post.tag.map((tag, index) => (
               <div
@@ -49,20 +49,15 @@ const NewPost = (props: NewPostPropType) => {
               </div>
             ))}
           </div>
-          <div>
-            <div className="pl-1.5">
-              <p className="text-t300 text-caption1">
-                {post.createdAt.slice(0, 10)}
-              </p>
-            </div>
-            <div className="flex pl-1.5 mt-10">
+          <div className="mb-[-10px]">
+            <div className="flex pl-1.5">
               <Image
                 alt="Heart"
                 src={"/icons/heart.svg"}
                 width={13}
                 height={12}
               />
-              <p className="text-t300 text-caption1 ml-1 mr-7">
+              <p className="text-t300 text-caption1 ml-1 mr-3">
                 {post.likedIds.length}
               </p>
               <Image
@@ -75,18 +70,25 @@ const NewPost = (props: NewPostPropType) => {
                 {/* {post.comments} */}0
               </p>
             </div>
+            <div className="pl-1.5">
+              <p className="text-t300 text-caption1">
+                {post.createdAt.slice(0, 10)}
+              </p>
+            </div>
           </div>
         </div>
         <div className="w-[60%] flex-shrink-0">
           <Link href={`posts/${postId}`}>
-            <p className="font-bold text-t500 text-h2 mb-10 mt-1">
+            <p className="truncate-ellipsis font-bold text-t500 text-h2 mt-1 h-9">
               {post.title}
             </p>
-            <div
-              className="truncate-ellipsis text-t300 text-body1 mb-10 h-16"
-              dangerouslySetInnerHTML={{ __html: sanitizedBody }}
-            />
-            <div className="flex py-auto">
+            <div className="flex-grow">
+              <div
+                className="truncate-ellipsis text-t300 text-body1 h-[140px]"
+                dangerouslySetInnerHTML={{ __html: sanitizedBody }}
+              />
+            </div>
+            <div className="flex py-auto mt-1">
               <Link href="/">
                 <Image
                   src={post.user.image}
@@ -113,7 +115,7 @@ const NewPost = (props: NewPostPropType) => {
               alt="Thumbnail"
               width={500}
               height={500}
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "cover", height: "210px" }}
             />
           </Link>
         </div>

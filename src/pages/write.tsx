@@ -12,6 +12,7 @@ import Photoadd from "../../public/icons/photoadd.svg";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import router from "next/router";
+import { toast } from "react-toastify";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
@@ -192,8 +193,17 @@ const Write = () => {
 
       const newTag = tagInput.trim();
       if (newTag !== "" && !tags.includes(newTag) && tags.length < 5) {
-        setTags((prevTags) => [...prevTags, newTag]);
-        setTagInput("");
+        if (newTag.length <= 10) {
+          // 15자 이상인 경우 입력 불가능
+          setTags((prevTags) => [...prevTags, newTag]);
+          setTagInput("");
+        } else {
+          toast.error("태그의 최대 길이는 10글자입니다!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+          });
+        }
       }
     }
   };
