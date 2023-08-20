@@ -11,9 +11,14 @@ const SignUp = () => {
   const router = useRouter();
   const [showContent, setShowContent] = useState(true);
   const [name, setName] = useState("");
+  const [duplicateName, setDuplicateName] = useState<boolean>(false);
   const [blogName, setBlogName] = useState("");
+  const [duplicateBlogName, setDuplicateBlogName] = useState<boolean>(false);
   const [IMG_URL, setIMGURL] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [IsduplicateName, IssetDuplicateName] = useState<boolean>(false);
+  const [IsduplicateBlogName, IssetDuplicateBlogName] =
+    useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -21,7 +26,7 @@ const SignUp = () => {
     const NewUser = async () => {
       try {
         const response = await axios.get("/api/currentUser");
-        console.log(response.data.newUser);
+        //console.log(response.data.newUser);
 
         // 3. 리다이렉션 처리
         if (response.data.newUser === false) {
@@ -34,21 +39,53 @@ const SignUp = () => {
     NewUser();
   });
 
+  const NameTimer = useRef<number | null>(null);
+  const BlogNameTimer = useRef<number | null>(null);
+
   const handleNameChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const username = event.target.value;
+    if (NameTimer.current !== null) {
+      clearTimeout(NameTimer.current);
+      NameTimer.current = null;
+    }
+
+    NameTimer.current = window.setTimeout(() => {
+      performNameCheck(username); // 3초 후에 중복 검사 실행
+      if (username.length > 10) {
+        toast.error("Name이 10자리를 초과하였습니다.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      }
+      if (username.length > 0 && username === blogName) {
+        toast.error("Name과 BlogName을 다르게 설정해주세요.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      }
+    }, 1000);
+  };
+
+  const performNameCheck = async (username: string) => {
     try {
       const checkName = await axios.get("/api/checkUsername", {
         params: { username },
       });
-      console.log(checkName.data);
+      //console.log(checkName.data);
       if (checkName.data.duplication == true) {
+        setDuplicateName(true);
         toast.error("이미 있는 이름입니다!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: true,
         });
+      } else {
+        setDuplicateName(false);
+        IssetDuplicateName(true);
       }
     } catch (error) {
       console.log("실패했어요ㅠ", error);
@@ -59,17 +96,46 @@ const SignUp = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const blogname = event.target.value;
+    if (BlogNameTimer.current !== null) {
+      clearTimeout(BlogNameTimer.current);
+      BlogNameTimer.current = null;
+    }
+
+    BlogNameTimer.current = window.setTimeout(() => {
+      performBlogNameCheck(blogname); // 3초 후에 중복 검사 실행
+      if (blogname.length > 20) {
+        toast.error("BlogName이 20자리를 초과하였습니다.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      }
+      if (blogname.length > 0 && name === blogname) {
+        toast.error("Name과 BlogName을 다르게 설정해주세요.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+      }
+    }, 1000);
+  };
+
+  const performBlogNameCheck = async (blogname: string) => {
     try {
       const checkName = await axios.get("/api/checkBlogname", {
         params: { blogname },
       });
-      console.log(checkName.data);
+      //console.log(checkName.data);
       if (checkName.data.duplication == true) {
+        setDuplicateBlogName(true);
         toast.error("이미 있는 블로그이름입니다!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: true,
         });
+      } else {
+        setDuplicateBlogName(false);
+        IssetDuplicateBlogName(true);
       }
     } catch (error) {
       console.log("실패했어요ㅠ", error);
@@ -86,8 +152,11 @@ const SignUp = () => {
     }
   };
 
+  const [isImageUploaded, setIsImageUploaded] = useState(true);
+
   const handleFileChange = async (e: any) => {
     // 내가 받을 파일은 하나기 때문에 index 0값의 이미지를 가짐
+    setIsImageUploaded(false);
     const file = e.target.files[0];
     if (!file) return;
 
@@ -113,7 +182,7 @@ const SignUp = () => {
         },
       });
       setIMGURL(result.data);
-      console.log(IMG_URL);
+      setIsImageUploaded(true);
     } catch (e) {
       console.error("업로드 실패");
     }
@@ -123,49 +192,73 @@ const SignUp = () => {
   const blogNameLength = blogName.length;
   const isNameAndBlogNameSame = name === blogName;
   const isNameLengthExceeded = nameLength > 10;
-  const isBlogNameLengthExceeded = blogNameLength > 10;
+  const isBlogNameLengthExceeded = blogNameLength > 20;
 
   const inputClass =
     "bg-t100 border border-t200 text-t500 text-body4 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2";
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (isNameLengthExceeded) {
-      toast.error("Name이 10자리 이상을 초과하였습니다.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
-      return;
+    if (IsduplicateBlogName && IsduplicateName && isImageUploaded) {
+      if (blogName.length > 20) {
+        toast.error("BlogName이 20자리를 초과하였습니다.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+        return;
+      }
+      if (blogName.length > 0 && name === blogName) {
+        toast.error("Name과 BlogName을 다르게 설정해주세요.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+        return;
+      }
+      if (name.length > 10) {
+        toast.error("Name이 10자리를 초과하였습니다.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+        return;
+      }
+      if (duplicateName) {
+        toast.error("이미 있는 이름입니다!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+        return;
+      }
+      if (duplicateBlogName) {
+        toast.error("이미 있는 블로그이름입니다!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
+        return;
+      }
+
+      try {
+        await axios.patch("/api/editProfile", {
+          username: name,
+          blogname: blogName,
+          image: IMG_URL[0],
+          //newUser: false,
+        });
+        console.log(IMG_URL[0]);
+
+        // API 호출 후에 페이지 이동
+        router.push("/");
+      } catch (error) {
+        console.log("실패했어요ㅠ", error);
+      }
     }
-    if (blogNameLength > 0 && isNameAndBlogNameSame) {
-      toast.error("Name과 BlogName을 다르게 설정해주세요.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
-      return;
-    }
-    if (isBlogNameLengthExceeded) {
-      toast.error("BlogName이 10자리 이상을 초과하였습니다.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
-      return;
-    }
-    try {
-      await axios.patch("/api/editProfile", {
-        username: name,
-        blogname: blogName,
-        image: IMG_URL[0],
-        newUser: false,
-      });
-      console.log(IMG_URL[0]);
-      router.push("/");
-    } catch (error) {
-      console.log("실패했어요ㅠ", error);
-    }
+
+    // 버튼을 누른 후 1초 뒤에 조건문 실행
+    // 1초 (1000 milliseconds) 뒤에 실행
   };
 
   return (
@@ -216,8 +309,13 @@ const SignUp = () => {
                   <label className="text-t300 text-body1">Name</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                      {11 > nameLength && nameLength > 0 && <Signup />}
-                      {isNameLengthExceeded && <Signuperror />}
+                      {duplicateName ||
+                      (nameLength > 0 && isNameAndBlogNameSame) ||
+                      isNameLengthExceeded ? (
+                        <Signuperror />
+                      ) : (
+                        nameLength > 0 && <Signup />
+                      )}
                     </div>
                     <input
                       name="username"
@@ -235,7 +333,8 @@ const SignUp = () => {
                   <label className="text-t300 text-body1">Blog Name</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
-                      {(blogNameLength > 0 && isNameAndBlogNameSame) ||
+                      {duplicateBlogName ||
+                      (blogNameLength > 0 && isNameAndBlogNameSame) ||
                       isBlogNameLengthExceeded ? (
                         <Signuperror />
                       ) : (

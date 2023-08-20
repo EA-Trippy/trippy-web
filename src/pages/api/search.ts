@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/libs/prismadb';
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/libs/prismadb";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'GET') {
+  if (req.method !== "GET") {
     return res.status(405).end();
   }
 
@@ -29,13 +29,13 @@ export default async function handler(
           {
             title: {
               contains: searchText,
-              mode: 'insensitive',
+              mode: "insensitive",
             },
           },
           {
             bodyText: {
               contains: searchText,
-              mode: 'insensitive',
+              mode: "insensitive",
             },
           },
           {
@@ -45,8 +45,11 @@ export default async function handler(
           },
         ],
       },
+      include: {
+        user: true,
+      },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
 

@@ -2,53 +2,30 @@ import Header from "@/components/Header";
 import NewPostList from "@/components/NewPostList";
 import Search2 from "../../public/icons/search2.svg";
 import { useState } from "react";
-
-const NEW_POSTS = [
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지연 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일전",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    blogName: "두재정의 작은 공간",
-    tags: ["일본", "오사카", "교토", "나라"],
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일전",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    blogName: "두재정의 작은 공간",
-    tags: ["일본", "오사카", "후쿠오카", "나라"],
-    likedCount: 10,
-    commentCount: 500,
-  },
-  {
-    image: "/images/test-image.jpeg",
-    title: "일본 간사이 지역 여행 Day1",
-    body: "6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 6박 7일 일본여행 ",
-    date: "1일전",
-    profile_image: "/images/test-image.jpeg",
-    nickname: "두재정",
-    blogName: "두재정의 작은 공간",
-    tags: ["일본", "나라", "오사카"],
-    likedCount: 10,
-    commentCount: 500,
-  },
-];
+import axios from "axios";
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState(""); // 입력값 상태를 관리합니다.
+  const [firstSearch, setfirstSearch] = useState<boolean>(false);
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
-  // 입력값이 변경될 때마다 필터링 로직을 실행합니다.
-  const filteredPosts = NEW_POSTS.filter((post) =>
-    post.title.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const PushEnter = async () => {
+    try {
+      console.log(searchValue);
+      const response = await axios.get(`/api/search?search=${searchValue}`);
+      setFilteredPosts(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error handling comment submission:", error);
+    }
+  };
+
+  const handleKeyPress = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      setfirstSearch(true);
+      PushEnter();
+    }
+  };
 
   return (
     <>
@@ -68,7 +45,8 @@ const Search = () => {
                 placeholder="검색어를 입력해주세요."
                 required
                 value={searchValue} // 입력값 상태를 입력칸에 반영합니다.
-                onChange={(e) => setSearchValue(e.target.value)} // 입력값이 변경될 때마다 상태를 업데이트합니다.
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={handleKeyPress}
               />
             </div>
           </div>
@@ -76,7 +54,7 @@ const Search = () => {
         <div className="mx-20">
           <div className="mx-10">
             {/* 필터링된 결과를 사용하여 NewPostList 컴포넌트에 전달합니다. */}
-            {searchValue === "" ? null : (
+            {firstSearch === false ? null : (
               <>
                 {filteredPosts.length > 0 ? (
                   <>

@@ -48,16 +48,16 @@ const TopPost = (props: TopPostPropType) => {
           />
         </Link>
       </div>
-      <div>
+      <div className="relative w-full px-3">
         <Link href={`posts/${postId}`}>
           <div className="mb-5 mt-5">
-            <h1 className="text-black text-subtitle1 mb-3 ml-3">
+            <h1 className="text-black text-subtitle1 mb-3 h-6 truncate-ellipsis">
               {post.title}
             </h1>
-            <div className="truncate-ellipsis text-t300 text-body1 mb-3 mx-3 h-28">
+            <div className="truncate-ellipsis text-t300 text-body1 mb-3 h-28">
               <div dangerouslySetInnerHTML={{ __html: sanitizedBody }} />
             </div>
-            <div className="text-t200 text-caption1 ml-3 mt-1">
+            <div className="text-t200 text-caption1 mt-1">
               {post.createdAt.slice(0, 10)}
             </div>
           </div>
