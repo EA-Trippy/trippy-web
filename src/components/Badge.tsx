@@ -10,7 +10,7 @@ interface BadgeType {
 }
 
 const Badge = (props: BadgePropType) => {
-  const {badge} = props;
+  const { badge } = props;
 
   return (
     <div className="relative w-[80px] h-[80px] flex flex-col items-center justify-center">
@@ -20,7 +20,7 @@ const Badge = (props: BadgePropType) => {
         alt="BadgeImage"
         width={80}
         height={80}
-        style={{objectFit: "cover"}}
+        style={{ objectFit: "cover" }}
       />
       <div className="absolute flex justify-center">{badge.region}</div>
     </div>

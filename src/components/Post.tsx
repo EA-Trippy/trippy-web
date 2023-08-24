@@ -73,7 +73,7 @@ const Post = (props: NewPostPropType) => {
     LikedTrue();
     BookMarkTrue();
     //console.log(DetailPost);
-  }, [post]);
+  }, [post.likedIds, post.bookmarkedIds]);
 
   const handleLikedClick = async () => {
     //console.log(post.id);

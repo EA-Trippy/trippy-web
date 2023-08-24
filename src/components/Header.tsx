@@ -7,6 +7,7 @@ import Profile from "../../public/icons/profile.svg";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import AlarmList from "@/components/AlarmList";
 
 export interface HeaderProps {
   title: string;
@@ -14,12 +15,17 @@ export interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isAlarmOpen, setIsAlarmOpen] = useState(false);
   const [userImage, setUserImage] = useState("");
+  const [userId, setUserId] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const alarmDropdownRef = useRef<HTMLDivElement>(null);
+  const [alarmList, setAlarmList] = useState([]);
 
   const handleProfileClick = async () => {
     setIsProfileOpen(!isProfileOpen);
   };
+
   const handleClickOutside = (event: MouseEvent) => {
     if (
       dropdownRef.current &&
@@ -27,6 +33,30 @@ export default function Header(props: HeaderProps) {
     ) {
       setIsProfileOpen(false);
     }
+    if (
+      alarmDropdownRef.current &&
+      !alarmDropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsAlarmOpen(false);
+    }
+  };
+
+  const handleModalClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    event.stopPropagation(); // 이벤트 전파 중단
+  };
+
+  const alarmshow = async () => {
+    setIsAlarmOpen(!isAlarmOpen);
+    const AlarmList = async () => {
+      try {
+        const notifications = await axios.get(`/api/notifications/${userId}`);
+        setAlarmList(notifications.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    AlarmList();
   };
 
   useEffect(() => {
@@ -34,6 +64,7 @@ export default function Header(props: HeaderProps) {
       try {
         const response = await axios.get("/api/currentUser");
         setUserImage(response.data.image);
+        setUserId(response.data.id);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -58,11 +89,16 @@ export default function Header(props: HeaderProps) {
               <Logo />
             </Link>
           </div>
-          <div className="flex items-center space-x-10 mr-10 mt-7 mb-7">
+          <div className="flex items-center space-x-10 mr-10 mt-7 mb-7 relative">
             <Link href="/search">
               <Search />
             </Link>
-            <Alarm />
+            <div onClick={handleModalClick} ref={alarmDropdownRef}>
+              <div onClick={alarmshow}>
+                <Alarm />
+              </div>
+              {isAlarmOpen && <AlarmList data={alarmList} />}
+            </div>
             <div className="relative" ref={dropdownRef}>
               {userImage ? (
                 <Image
