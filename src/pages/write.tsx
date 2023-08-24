@@ -222,20 +222,61 @@ const Write = () => {
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      await axios.post("/api/posts", {
-        title: title,
-        bodyHTML: editorValue,
-        bodyText: editorValue.replace(/(<([^>]+)>)/gi, ""),
-        startDate: startDate,
-        endDate: finalDate,
-        thumbnail: IMG_URL[0],
-        people: selectedPeople,
-        tag: tags,
-      });
-      router.push("/");
-    } catch (error) {
-      console.log("실패했어요ㅠ", error);
+    if (IMG_URL[0] == null) {
+      const imgTagRegex = /<img[^>]*src="([^"]*)"/g;
+      const matches = imgTagRegex.exec(editorValue);
+
+      if (matches && matches.length >= 2) {
+        const url = matches[1];
+        try {
+          await axios.post("/api/posts", {
+            title: title,
+            bodyHTML: editorValue,
+            bodyText: editorValue.replace(/(<([^>]+)>)/gi, ""),
+            startDate: startDate,
+            endDate: finalDate,
+            thumbnail: url,
+            people: selectedPeople,
+            tag: tags,
+          });
+          router.push("/");
+        } catch (error) {
+          console.log("실패했어요ㅠ", error);
+        }
+      } else {
+        try {
+          await axios.post("/api/posts", {
+            title: title,
+            bodyHTML: editorValue,
+            bodyText: editorValue.replace(/(<([^>]+)>)/gi, ""),
+            startDate: startDate,
+            endDate: finalDate,
+            thumbnail:
+              "https://storage.googleapis.com/trippy_image/1692283474388",
+            people: selectedPeople,
+            tag: tags,
+          });
+          router.push("/");
+        } catch (error) {
+          console.log("실패했어요ㅠ", error);
+        }
+      }
+    } else {
+      try {
+        await axios.post("/api/posts", {
+          title: title,
+          bodyHTML: editorValue,
+          bodyText: editorValue.replace(/(<([^>]+)>)/gi, ""),
+          startDate: startDate,
+          endDate: finalDate,
+          thumbnail: IMG_URL[0],
+          people: selectedPeople,
+          tag: tags,
+        });
+        router.push("/");
+      } catch (error) {
+        console.log("실패했어요ㅠ", error);
+      }
     }
   };
 

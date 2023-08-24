@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import Plus from "../../public/icons/plus.svg";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/router";
 
 interface CommentPropType {
   comment: CommentType;
@@ -69,13 +66,11 @@ const Comment = (props: CommentPropType) => {
 
 const NotLoginCommentList = (props: CommentListPropType) => {
   const { data } = props;
-  const router = useRouter();
-  const { id } = router.query;
 
   return (
     <div className="mt-10">
-      <div className="text-body1 text-t300">{data.length}개의 댓글</div>
-
+      <div className="text-body1 text-t300 mb-2">{data.length}개의 댓글</div>
+      <hr className="border border-[#F5F5F5]" />
       {data?.map((comment, index) => {
         return <Comment key={index} comment={comment} />;
       })}

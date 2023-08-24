@@ -25,6 +25,26 @@
   /* Create the white base */
 }
 
+.alarm-bubble {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+/* Arrow pointing upwards */
+.alarm-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 72%;
+  margin-left: -10px; /* Adjust the value to position the arrow */
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #ccc transparent; /* 테두리 색상 설정 */
+  /* Create the white base */
+}
+
 /* Add this CSS to your styles */
 .truncate-ellipsis {
   overflow: hidden;
