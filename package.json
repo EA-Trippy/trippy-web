@@ -53,6 +53,6 @@
     "@types/react-datepicker": "^4.15.0",
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@types/uuid": "^9.0.2",
-    "prisma": "^5.0.0"
+    "prisma": "^5.4.2"
   }
 }
